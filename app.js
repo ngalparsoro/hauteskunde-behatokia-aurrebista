@@ -69,7 +69,7 @@ const SVGNS = "http://www.w3.org/2000/svg";
 // «Bozken pisua»: en cada sección censal (en Iparralde, cada commune), un círculo por fuerza con área proporcional a sus
 // votos, a escala del terreno (radio en metros = BOLA_M × √votos: 400 votos, 80 m), así que crece con el zoom y se compara
 // igual en todo el mapa; los muy pequeños, como mínimo BOLA_MIN px. Las BOLA_INDARRAK primeras fuerzas de cada sección.
-// Con 4 m los de las ciudades caben sin pisarse moviéndose poco (en Bilbo, la mitad menos de 400 m; con 8 m, casi 3 km).
+// Van dentro de su sección siempre que caben (con 4 m, nueve de cada diez) y, si no, tocando su borde (03-mapa.js, bolakKokatu).
 const BOLA_M = 4, BOLA_MIN = 1.5, BOLA_INDARRAK = 5;
 const TEKLA_MODUAK = { w: "winner", m: "margin", t: "turnout", c: "compare", u: "udalforal", b: "pisua" };
 // Argibidea (puntero): solo los partidos o bloques a esta distancia (puntos) del primero, los que optan a gobernar
@@ -129,7 +129,7 @@ const TESTUAK = {
     lagMota: "Mapa mota: Udalak, Autonomikoak, Foralak, Estatua, Europa", lagQE: "Aurreko / hurrengo hauteskundea",
     lagWMT: "Irabazlea, lehian dauden eremuak, parte-hartzea", lagCU: "Konparatu bi urte, udal / foru aldea",
     pisua: "Bozken pisua", lagB: "Bozken pisua: boto kopurua borobiletan", pisuaLegenda: "Indar baten botoak (borobilaren azalera)",
-    pisuaAzalpena: "Sekzio zentsal bakoitzean (Iparraldean, udalerri bakoitzean) bost indar nagusiek borobil bana dute, bere botoen proportzioan eta alderdiaren edo blokearen kolorearekin. Modu honetan maila sekzioetan finkatuta dago. Hurbildu ahala, borobilak hazi egiten dira.", lagItxura: "Itxura argia / iluna", lagS: "Satelite-mapa erakutsi / ezkutatu",
+    pisuaAzalpena: "Sekzio zentsal bakoitzean (Iparraldean, udalerri bakoitzean) bost indar nagusiek borobil bana dute, bere botoen proportzioan eta alderdiaren edo blokearen kolorearekin; sekzioaren barruan, kabitzen badira, eta bestela ertza ukituz, inoiz gainjarri gabe. Modu honetan maila sekzioetan finkatuta dago. Hurbildu ahala, borobilak hazi egiten dira.", lagItxura: "Itxura argia / iluna", lagS: "Satelite-mapa erakutsi / ezkutatu",
     lagL: "Ezkerreko menua erakutsi / ezkutatu", lagK: "Emaitzak ↔ eserlekuak (panelean)", lagP: "Denbora-lerroa erreproduzitu / gelditu",
     lagBilatu: "Udalerri bat bilatu", lag0: "Euskal Herria osoa ikusi", lagEsc: "Hautapena eta leihoak itxi",
     // panel
@@ -239,7 +239,7 @@ const TESTUAK = {
     lagMota: "Tipo de mapa: municipales, autonómicas, forales, estatales, europeas", lagQE: "Elección anterior / siguiente",
     lagWMT: "Ganador, zonas reñidas, participación", lagCU: "Comparar dos años, diferencia municipales / forales",
     pisua: "Peso del voto", lagB: "Peso del voto: los votos en círculos", pisuaLegenda: "Votos de una fuerza (área del círculo)",
-    pisuaAzalpena: "En cada sección censal (en Iparralde, en cada municipio) las cinco primeras fuerzas tienen un círculo cada una, en proporción a sus votos y con el color de su partido o bloque. En este modo el nivel queda fijo en las secciones. Al acercarse, los círculos crecen.", lagItxura: "Aspecto claro / oscuro", lagS: "Mostrar / ocultar el satélite",
+    pisuaAzalpena: "En cada sección censal (en Iparralde, en cada municipio) las cinco primeras fuerzas tienen un círculo cada una, en proporción a sus votos y con el color de su partido o bloque; dentro de la sección si caben y, si no, tocando su borde, sin pisarse nunca. En este modo el nivel queda fijo en las secciones. Al acercarse, los círculos crecen.", lagItxura: "Aspecto claro / oscuro", lagS: "Mostrar / ocultar el satélite",
     lagL: "Mostrar / ocultar el menú de la izquierda", lagK: "Resultados ↔ escaños (en el panel)", lagP: "Reproducir / parar la línea de tiempo",
     lagBilatu: "Buscar un municipio", lag0: "Ver Euskal Herria entera", lagEsc: "Cerrar la selección y las ventanas",
     udalerri: "municipios", biztLabur: "hab.", biztanle: "habitantes", zinegotzi: "concejales", eserleku: "escaños", sekzioa: "sección",
@@ -345,7 +345,7 @@ const TESTUAK = {
     lagMota: "Type de carte : municipales, autonomiques, forales, nationales, européennes", lagQE: "Élection précédente / suivante",
     lagWMT: "Vainqueur, zones serrées, participation", lagCU: "Comparer deux années, écart municipales / forales",
     pisua: "Poids des voix", lagB: "Poids des voix : les voix en cercles", pisuaLegenda: "Voix d'une force (aire du cercle)",
-    pisuaAzalpena: "Dans chaque section électorale (en Iparralde, dans chaque commune), les cinq premières forces ont chacune un cercle, proportionnel à leurs voix et de la couleur de leur parti ou bloc. Dans ce mode, l'échelle reste fixée aux sections. En zoomant, les cercles grandissent.", lagItxura: "Apparence claire / sombre", lagS: "Afficher / masquer le satellite",
+    pisuaAzalpena: "Dans chaque section électorale (en Iparralde, dans chaque commune), les cinq premières forces ont chacune un cercle, proportionnel à leurs voix et de la couleur de leur parti ou bloc ; à l'intérieur de la section s'ils y tiennent, sinon contre sa limite, sans jamais se chevaucher. Dans ce mode, l'échelle reste fixée aux sections. En zoomant, les cercles grandissent.", lagItxura: "Apparence claire / sombre", lagS: "Afficher / masquer le satellite",
     lagL: "Afficher / masquer le menu de gauche", lagK: "Résultats ↔ sièges (dans le panneau)", lagP: "Lire / arrêter la frise chronologique",
     lagBilatu: "Rechercher une commune", lag0: "Voir tout Euskal Herria", lagEsc: "Fermer la sélection et les fenêtres",
     udalerri: "communes", biztLabur: "hab.", biztanle: "habitants", zinegotzi: "conseillers", eserleku: "sièges", sekzioa: "section",
@@ -451,7 +451,7 @@ const TESTUAK = {
     lagMota: "Map type: local, regional, foral (provincial assemblies), state, European", lagQE: "Previous / next election",
     lagWMT: "Winner, close races, turnout", lagCU: "Compare two years, local / provincial gap",
     pisua: "Vote weight", lagB: "Vote weight: votes as circles", pisuaLegenda: "Votes for one party (circle area)",
-    pisuaAzalpena: "In each census section (in Iparralde, each municipality) the top five parties each have a circle, in proportion to their votes and in the colour of their party or bloc. In this mode the level stays fixed at census sections. Circles grow as you zoom in.", lagItxura: "Light / dark appearance", lagS: "Show / hide satellite",
+    pisuaAzalpena: "In each census section (in Iparralde, each municipality) the top five parties each have a circle, in proportion to their votes and in the colour of their party or bloc; inside the section when they fit, otherwise touching its edge, never overlapping. In this mode the level stays fixed at census sections. Circles grow as you zoom in.", lagItxura: "Light / dark appearance", lagS: "Show / hide satellite",
     lagL: "Show / hide the left menu", lagK: "Results ↔ seats (in the panel)", lagP: "Play / stop the timeline",
     lagBilatu: "Search a municipality", lag0: "Show all of Euskal Herria", lagEsc: "Close the selection and windows",
     udalerri: "municipalities", biztLabur: "inhab.", biztanle: "inhabitants", zinegotzi: "councillors", eserleku: "seats", sekzioa: "section",
@@ -564,7 +564,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "64cd3b63a9b0";
+const VERSION = "2fc16af2d9ce";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -1322,8 +1322,9 @@ function pisuaGeruzak() {
     map.setPaintProperty(l, "line-width", piz ? { "muga-udal": .4, "muga-esk": .6, "muga-lur": .9 }[l] : MUGA_ZABALERAK[l]);
   }
   for (const k in GEO) {
-    map.setPaintProperty(k + "-line", "line-color", ["case", sel, MAPA_K.nabarmen, hov, MAPA_K.nabarmen, piz ? zuria : MAPA_K.muga]);
-    map.setPaintProperty(k + "-line", "line-width", ["case", sel, piz ? 1.4 : 2.25, hov, piz ? 1 : 2.2, piz ? .35 : .7]);
+    // (las secciones, sin borde: solo la que está bajo el puntero, en blanco, y la elegida, en oro)
+    map.setPaintProperty(k + "-line", "line-color", ["case", sel, MAPA_K.nabarmen, hov, piz ? zuria : MAPA_K.nabarmen, piz ? zuria : MAPA_K.muga]);
+    map.setPaintProperty(k + "-line", "line-width", ["case", sel, piz ? 1.4 : 2.25, hov, piz ? 1.2 : 2.2, piz ? (k === "sec" ? 0 : .35) : .7]);
     map.setPaintProperty(k + "-line", "line-opacity", piz ? .6 : 1);
     map.setLayoutProperty(k + "-halo", "visibility", piz ? "none" : map.getLayoutProperty(k + "-line", "visibility") || "none");
   }
@@ -1347,47 +1348,88 @@ function ezarriMaila() {
 }
 
 // «Bozken pisua»: en cada sección (y commune de Iparralde) un círculo por fuerza, con el color de su familia (o bloque, donde
-// el panel va por bloques), apretados alrededor del centro de la sección sin pisarse (en metros: así no se mueven al hacer
-// zoom). Se recalculan solo cuando cambia lo que se ve; la sección elegida, con el borde en oro.
-let BOLA_MAX = 0, bolaGakoa = "";
-function bolakPilatu(rr) {  // radios (m), de mayor a menor → centros [x, y, r] (m) alrededor del primero, sin solaparse
-  const out = [];
-  for (const r of rr) {
-    let onena = out.length ? null : [0, 0, r, 0];
-    for (const [x0, y0, r0] of out) for (let a = 0; a < 24; a++) {
-      const t = a / 12 * Math.PI, x = x0 + (r0 + r + 2) * Math.cos(t), y = y0 + (r0 + r + 2) * Math.sin(t);  // 2 m entre ellos
-      if (out.some(([x1, y1, r1]) => Math.hypot(x - x1, y - y1) < r + r1 + 1.99)) continue;
-      const d = Math.hypot(x, y); if (!onena || d < onena[3]) onena = [x, y, r, d];
-    }
-    out.push(onena ? onena.slice(0, 3) : [0, 0, r]);
-  }
-  const [cx, cy] = [0, 1].map((k) => out.reduce((a, c) => a + c[k] * c[2] ** 2, 0) / out.reduce((a, c) => a + c[2] ** 2, 0));
-  return out.map(([x, y, r]) => [x - cx, y - cy, r]);  // centrados en su centro de masas
+// el panel va por bloques). Se recalculan solo cuando cambia lo que se ve; la sección elegida, con el borde en oro.
+let BOLA_MAX = 0, bolaGakoa = "", bolaLekuGakoa = "", bolaLekuak_ = new Map();
+// «Bozken pisua»: los círculos, dentro de su sección siempre que quepan y, si no, lo más dentro posible (tocando el borde),
+// sin pisarse nunca. En metros (vale para todos los zooms).
+const BOLA_TARTEA = 2, BOLA_SAREA = 16, BOLA_ERTZA = 64, BOLA_GELAXKA = 120;  // m entre círculos; puntos por lado; puntos del borde; m de celda
+function bolaEraztunak(geom, KX, KY) {
+  const pol = geom.type === "Polygon" ? [geom.coordinates] : geom.type === "MultiPolygon" ? geom.coordinates : [];
+  return pol.flatMap((p) => p.map((r) => r.map(([lon, lat]) => [lon * KX, lat * KY])));
 }
-// Los círculos de secciones vecinas (en las ciudades) se pisarían: cada sección, con sus círculos juntos (el círculo que los
-// envuelve), va al sitio libre más cercano a su centro, de la más grande a la más pequeña, buscando en espiral. En metros
-// (vale para todos los zooms) y con una rejilla de celdas para no mirar todas las parejas: nunca se pisan dos secciones.
-const BOLA_TARTEA = 4, BOLA_GELAXKA = 200;  // m entre secciones; m de celda
-function bolakBanandu(xs, ys, rs) {
-  const n = rs.length, sarea = new Map(), g = (v) => Math.floor(v / BOLA_GELAXKA);
+function bolaBarruan(rings, x, y) {  // distancia al borde más cercano: + dentro, − fuera
+  let barruan = false, d2 = Infinity;
+  for (const r of rings) for (let i = 0, j = r.length - 1; i < r.length; j = i++) {
+    const xi = r[i][0], yi = r[i][1], xj = r[j][0], yj = r[j][1];
+    if ((yi > y) !== (yj > y) && x < (xj - xi) * (y - yi) / (yj - yi) + xi) barruan = !barruan;
+    const dx = xj - xi, dy = yj - yi, l2 = dx * dx + dy * dy, t = l2 ? Math.max(0, Math.min(1, ((x - xi) * dx + (y - yi) * dy) / l2)) : 0;
+    const ex = xi + t * dx - x, ey = yi + t * dy - y; d2 = Math.min(d2, ex * ex + ey * ey);
+  }
+  return (barruan ? 1 : -1) * Math.sqrt(d2);
+}
+// los puntos candidatos de una sección (una rejilla sobre su caja, los de dentro), con su distancia al borde, ordenados de
+// más cerca a más lejos de su punto más metido
+function bolaLekuak(geom, KX, KY) {
+  const rings = bolaEraztunak(geom, KX, KY);
+  let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+  for (const r of rings) for (const [x, y] of r) { if (x < x0) x0 = x; if (x > x1) x1 = x; if (y < y0) y0 = y; if (y > y1) y1 = y; }
+  const px = [], py = [], db = [];
+  for (let i = 0; i < BOLA_SAREA; i++) for (let j = 0; j < BOLA_SAREA; j++) {
+    const x = x0 + (i + 0.5) * (x1 - x0) / BOLA_SAREA, y = y0 + (j + 0.5) * (y1 - y0) / BOLA_SAREA, d = bolaBarruan(rings, x, y);
+    if (d > 0) { px.push(x); py.push(y); db.push(d); }
+  }
+  if (!px.length) { px.push((x0 + x1) / 2); py.push((y0 + y1) / 2); db.push(0); }
+  let p = 0; for (let k = 1; k < db.length; k++) if (db[k] > db[p]) p = k;
+  const ordena = [...db.keys()].sort((a, b) => Math.hypot(px[a] - px[p], py[a] - py[p]) - Math.hypot(px[b] - px[p], py[b] - py[p]));
+  // y puntos del borde (cada BOLA_ERTZA del perímetro), de más cerca a más lejos de ese punto: ahí un círculo toca el borde
+  const ertza = [], luzera = rings.reduce((a, r) => a + r.reduce((b, q, i) => b + (i ? Math.hypot(q[0] - r[i - 1][0], q[1] - r[i - 1][1]) : 0), 0), 0);
+  const urratsa = Math.max(5, luzera / BOLA_ERTZA);
+  for (const r of rings) { let falta = 0;
+    for (let i = 1; i < r.length; i++) { const [xa, ya] = r[i - 1], [xb, yb] = r[i], l = Math.hypot(xb - xa, yb - ya);
+      for (let t = falta; t < l; t += urratsa) ertza.push([xa + (xb - xa) * t / l, ya + (yb - ya) * t / l]);
+      falta = (falta - l) % urratsa; if (falta < 0) falta += urratsa; } }
+  ertza.sort((a, b) => Math.hypot(a[0] - px[p], a[1] - py[p]) - Math.hypot(b[0] - px[p], b[1] - py[p]));
+  return { px, py, db, ordena, ertza, x0: px[p], y0: py[p] };
+}
+// taldeak: [{L (bolaLekuak), rs (radios, de mayor a menor)}] → para cada una, el centro de cada círculo [[x, y], …]
+function bolakKokatu(taldeak) {
+  const sarea = new Map(), X = [], Y = [], R = [], g = (v) => Math.floor(v / BOLA_GELAXKA);
   const libre = (x, y, r) => {
     for (let gx = g(x - r - BOLA_TARTEA); gx <= g(x + r + BOLA_TARTEA); gx++)
       for (let gy = g(y - r - BOLA_TARTEA); gy <= g(y + r + BOLA_TARTEA); gy++)
-        for (const j of sarea.get(gx * 1e6 + gy) || []) if (Math.hypot(x - xs[j], y - ys[j]) < r + rs[j] + BOLA_TARTEA) return false;
+        for (const j of sarea.get(gx * 1e6 + gy) || []) if (Math.hypot(x - X[j], y - Y[j]) < r + R[j] + BOLA_TARTEA) return false;
     return true;
   };
-  for (const i of [...Array(n).keys()].sort((a, b) => rs[b] - rs[a])) {
-    const x0 = xs[i], y0 = ys[i], urratsa = Math.max(10, rs[i] / 2);
-    bilatu: for (let eraztuna = 0; eraztuna < 2000; eraztuna++) {
-      const d = eraztuna * urratsa, zenbat = eraztuna ? Math.ceil(2 * Math.PI * d / urratsa) : 1, hasi = (i * 2.399) % (2 * Math.PI);
-      for (let a = 0; a < zenbat; a++) {
-        const t = hasi + a * 2 * Math.PI / zenbat, x = x0 + d * Math.cos(t), y = y0 + d * Math.sin(t);
-        if (libre(x, y, rs[i])) { xs[i] = x; ys[i] = y; break bilatu; }
+  const jarri = (x, y, r) => {
+    const i = X.length; X.push(x); Y.push(y); R.push(r);
+    for (let gx = g(x - r); gx <= g(x + r); gx++) for (let gy = g(y - r); gy <= g(y + r); gy++) {
+      const k = gx * 1e6 + gy, l = sarea.get(k); if (l) l.push(i); else sarea.set(k, [i]);
+    }
+    return [x, y];
+  };
+  const out = taldeak.map((t) => t.rs.map(() => null));
+  // 1. dentro de su sección, enteros, lo más cerca posible de su punto más metido
+  taldeak.forEach((t, ti) => t.rs.forEach((r, k) => {
+    const L = t.L;
+    for (const c of L.ordena) if (L.db[c] >= r + 1 && libre(L.px[c], L.py[c], r)) { out[ti][k] = jarri(L.px[c], L.py[c], r); return; }
+  }));
+  // 2. los que no caben: lo más dentro posible (tocando el borde); si no queda sitio dentro, el sitio libre más cercano, en espiral
+  taldeak.forEach((t, ti) => t.rs.forEach((r, k) => {
+    if (out[ti][k]) return;
+    const L = t.L; let onena = -1;
+    for (const c of L.ordena) if ((onena < 0 || L.db[c] > L.db[onena]) && libre(L.px[c], L.py[c], r)) onena = c;
+    if (onena >= 0) { out[ti][k] = jarri(L.px[onena], L.py[onena], r); return; }
+    for (const [x, y] of L.ertza) if (libre(x, y, r)) { out[ti][k] = jarri(x, y, r); return; }  // sobre el borde
+    const urratsa = Math.max(5, r / 2);
+    for (let e = 1; e < 4000; e++) {
+      const d = e * urratsa, n = Math.ceil(2 * Math.PI * d / urratsa);
+      for (let a = 0; a < n; a++) {
+        const x = L.x0 + d * Math.cos(a * 2 * Math.PI / n), y = L.y0 + d * Math.sin(a * 2 * Math.PI / n);
+        if (libre(x, y, r)) { out[ti][k] = jarri(x, y, r); return; }
       }
     }
-    for (let gx = g(xs[i] - rs[i]); gx <= g(xs[i] + rs[i]); gx++)
-      for (let gy = g(ys[i] - rs[i]); gy <= g(ys[i] + rs[i]); gy++) { const k = gx * 1e6 + gy, l = sarea.get(k); if (l) l.push(i); else sarea.set(k, [i]); }
-  }
+  }));
+  return out;
 }
 function bolakEguneratu() {
   if (!estiloaPrest || !map.getLayer("bolak")) return;
@@ -1397,21 +1439,22 @@ function bolakEguneratu() {
   const gakoa = [state.mapa, state.hauteskundea, ...osagK(), state.denboraT, state.bakarrik, sekUrtea, GEO.sec.features.length, MAPA_K.halo].join("|");
   if (gakoa !== bolaGakoa) {
     bolaGakoa = gakoa;
-    // en metros sobre una proyección sencilla (a 43° N), para separar y volver a grados
+    // en metros sobre una proyección sencilla (a 43° N); los puntos candidatos de cada sección, una vez por seccionado
     const KY = 111320, KX = KY * Math.cos(43 * Math.PI / 180), taldeak = [];
+    const lekuGakoa = `${sekUrtea}|${GEO.sec.features.length}`;
+    if (lekuGakoa !== bolaLekuGakoa) { bolaLekuGakoa = lekuGakoa; bolaLekuak_ = new Map(); }
     for (const f of GEO.sec.features) {
-      const id = String(f.id), bb = f.properties.bb, r = bb && erregistroa("sec", id);
-      if (!r || !r.c || !r.c.length) continue;
+      const id = String(f.id), r = erregistroa("sec", id);
+      if (!r || !r.c || !r.c.length || !f.geometry) continue;
       const indarrak = r.c.slice(0, BOLA_INDARRAK).filter((c) => c[2] > 0).sort((a, b) => b[2] - a[2]);
       if (!indarrak.length) continue;
-      const bolak = bolakPilatu(indarrak.map((c) => BOLA_M * Math.sqrt(c[2])));
-      taldeak.push({ id, x: (bb[0] + bb[2]) / 2 * KX, y: (bb[1] + bb[3]) / 2 * KY, R: Math.max(...bolak.map(([x, y, rm]) => Math.hypot(x, y) + rm)),
-                     bolak: bolak.map(([x, y, rm], n) => [x, y, rm, indarrak[n]]) });
+      if (!bolaLekuak_.has(id)) bolaLekuak_.set(id, bolaLekuak(f.geometry, KX, KY));
+      taldeak.push({ id, L: bolaLekuak_.get(id), rs: indarrak.map((c) => BOLA_M * Math.sqrt(c[2])), indarrak });
     }
-    const xs = Float64Array.from(taldeak, (t) => t.x), ys = Float64Array.from(taldeak, (t) => t.y);
-    bolakBanandu(xs, ys, Float64Array.from(taldeak, (t) => t.R));
-    const feats = taldeak.flatMap((t, i) => t.bolak.map(([x, y, rm, c]) => ({ type: "Feature",
-      properties: { fid: t.id, rm, v: c[2], c: FAM[c[1]] || FAM.LOCAL }, geometry: { type: "Point", coordinates: [(xs[i] + x) / KX, (ys[i] + y) / KY] } })));
+    const zentroak = bolakKokatu(taldeak);
+    const feats = taldeak.flatMap((t, i) => t.indarrak.map((c, k) => ({ type: "Feature",
+      properties: { fid: t.id, rm: t.rs[k], v: c[2], c: FAM[c[1]] || FAM.LOCAL },
+      geometry: { type: "Point", coordinates: [zentroak[i][k][0] / KX, zentroak[i][k][1] / KY] } })));
     BOLA_MAX = Math.max(0, ...feats.map((f) => f.properties.v));
     map.getSource("bolak").setData({ type: "FeatureCollection", features: feats });
   }
