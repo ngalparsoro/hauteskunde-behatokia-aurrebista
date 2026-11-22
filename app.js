@@ -147,7 +147,8 @@ const TESTUAK = {
     alderdia: "Alderdia", ufDaturikEz: "Daturik ez · udal / foru aldea", ufDaturikEzTip: "Daturik ez udal / foru aldea kalkulatzeko",
     aggOharra: "Botoak familiaka batuta; tokiko zerrendak ez dira irabazle-kalkuluan sartzen.",
     aggOharraEH: "Botoak familiaka batuta; tokiko zerrendak, guztiak batera, lehenak badira, eremua grisez.",
-    tarteAzalpena: { errenta_maila: "Kontsumo-unitateko errenta erabilgarriaren mediana, 2023", ikasketa_maila: "15 urtetik gorakoetan goi-mailako ikasketak dituztenak, 2023" },
+    erreferentzia: (e) => `Euskal Herriko erreferentziako mediana: ${e}.`,
+    tarteAzalpena: { errenta_maila: "Kontsumo-unitateko errenta erabilgarriaren mediana, Euskal Herriko medianarekiko, 2023", ikasketa_maila: "15 urtetik gorakoetan goi-mailako ikasketak dituztenak, 2023" },
     deskribapena: "Deskribapena", desk: { "udalerriak": "Osatzen duten udalerriak", "oharra": "Sakatu udalerri bat bere emaitzak ikusteko." },
     zatia: "zatia", balioIzena: { "ibai_arroa": "udalerri zatituak: erroldaren %", "euskara_eremua": "% euskaldun", "udal_tamaina": "biztanle", "ikasketa_maila": "% goi-ikasketak", "errenta_maila": "errenta (mediana)" },
     mailaDesk: { euskara_eremua: "Udalerri bakoitzeko euskaldunen ehunekoa (euskara ondo edo nahiko ondo hitz egiten dutenak): eremu euskalduna % 50 baino gehiago, mistoa % 30–50, erdalduna % 30 baino gutxiago. Ezagutza da, ez erabilera. Iturriak: Eustat, 2021eko zentsua (EAE); Nastat, hizkuntza-eremu bakoitzeko datua, behin-behinekoa (Nafarroa Garaia); VII. Inkesta Soziolinguistikoa, hiru eremutan (Iparraldea).",
@@ -156,7 +157,7 @@ const TESTUAK = {
       ibai_arroa: "MapaMeteoko klima-mapako arroak, txikienak ondokoarekin batuta. Hegoaldean sekzioka: sekzio bakoitza bere arroan, eta arro batean baino gehiagotan sekzioak dituen udalerria zatituta (Donostia: Urumea, Oiartzun eta Oria); sekziorik gabeko hauteskundeetan, erroldaren zatirik handiena duen arroan. Iparraldean, udal-lurraren zatirik handiena duen arroan. Iturria: EU-Hydro (Copernicus).",
       udal_tamaina: "Udalerriaren biztanleria, Gaindegiaren txostenaren tarteetan. Iturriak: Barne Ministerioa, 2023ko udal hauteskundeak (Hegoaldea); INSEE (Iparraldea).",
       ikasketa_maila: "15 urteko eta gehiagoko biztanleetatik goi-mailako ikasketak dituztenen ehunekoa (goi-mailako LH, unibertsitatea…), 2023: apala % 35 baino gutxiago, ertaina % 35–45, altua % 45 edo gehiago. Iturriak: INE, urteko zentsua (Hegoaldea); INSEE, zentsua (Iparraldea).",
-      errenta_maila: "Kontsumo-unitateko errenta erabilgarriaren mediana, 2023 (zergen ondoren eta prestazioak barne; etxeko errenta kontsumo-unitateen artean banatuta: lehen helduak 1, 14 urtetik gorako beste bakoitzak 0,5 eta haur bakoitzak 0,3): apala 23.000 € baino gutxiago, ertaina 23.000–26.000 €, altua 26.000 € edo gehiago. Iturriak: INE, ADRH (Hegoaldea); INSEE, Filosofi (Iparraldea)." },
+      errenta_maila: "Kontsumo-unitateko errenta erabilgarriaren mediana, 2023 (zergen ondoren eta prestazioak barne; etxeko errenta kontsumo-unitateen artean banatuta: lehen helduak 1, 14 urtetik gorako beste bakoitzak 0,5 eta haur bakoitzak 0,3): Euskal Herriko erreferentziako medianarekiko (udalerrietako medianak, biztanleriaren arabera haztatuta): pobrezia-atalasetik behera %60 baino gutxiago (EBren irizpidea; udalerririk badago bakarrik), apala %60–90, ertaina %90–110, altua %110 edo gehiago. Iturriak: INE, ADRH (Hegoaldea); INSEE, Filosofi (Iparraldea)." },
     ceraLbl: "Atzerriko botoa (CERA)", egoiliarrak: "egoiliarrak", ceraBarne: "Goiko emaitzetan batuta dago (lurraldeetan eta guztira). Mapako parte-hartzearen geruzak ez du barne hartzen (egoiliarrak).",
     ufAzalpena: "Alderdi edo bloke berak udal hauteskundeetan eta foru-parekoetan jasotako botoen aldea: EAEn Batzar Nagusiak eta Nafarroan Parlamentua (egun berean), Iparraldean kantonal hurbilenak. «Guztira»: aldeen batura erdia, hau da, bozkatzaileen zein zatik bozkatu duen bestela.",
     botoAldaketaOsoa: "boto aldaketa osoa", guztiraAukera: "Guztira (boto aldaketa osoa)",
@@ -256,7 +257,8 @@ const TESTUAK = {
     alderdia: "Partido", ufDaturikEz: "Sin datos · diferencia municipales / forales", ufDaturikEzTip: "Sin datos para calcular la diferencia municipales / forales",
     aggOharra: "Votos sumados por familias; las listas locales no cuentan para calcular el ganador.",
     aggOharraEH: "Votos sumados por familias; si las listas locales, todas juntas, quedan primeras, la zona va en gris.",
-    tarteAzalpena: { errenta_maila: "Mediana de la renta disponible por unidad de consumo, 2023", ikasketa_maila: "Población de 15 años y más con estudios superiores, 2023" },
+    erreferentzia: (e) => `Mediana de referencia de Euskal Herria: ${e}.`,
+    tarteAzalpena: { errenta_maila: "Mediana de la renta disponible por unidad de consumo, respecto a la de Euskal Herria, 2023", ikasketa_maila: "Población de 15 años y más con estudios superiores, 2023" },
     deskribapena: "Descripción", desk: { "udalerriak": "Municipios que la forman", "oharra": "Pulsa un municipio para ver sus resultados." },
     zatia: "parte", balioIzena: { "ibai_arroa": "municipios partidos: % del censo", "euskara_eremua": "% euskaldunes", "udal_tamaina": "habitantes", "ikasketa_maila": "% estudios superiores", "errenta_maila": "renta (mediana)" },
     mailaDesk: { euskara_eremua: "Porcentaje de euskaldunes de cada municipio (hablan euskera bien o bastante bien): zona euskalduna más del 50 %, mixta del 30 al 50 %, erdalduna menos del 30 %. Es conocimiento, no uso. Fuentes: Eustat, censo de 2021 (CAV); Nastat, dato de cada zona lingüística, provisional (Nafarroa Garaia); VII Encuesta Sociolingüística, en tres zonas (Iparralde).",
@@ -265,7 +267,7 @@ const TESTUAK = {
       ibai_arroa: "Las cuencas del mapa del clima de MapaMeteo, las más pequeñas juntas a una vecina. En Hegoalde, por secciones: cada sección en su cuenca, y el municipio con secciones en varias, partido (Donostia: Urumea, Oiartzun y Oria); en las elecciones sin secciones, en la cuenca de la mayor parte de su censo. En Iparralde, en la de la mayor parte del término. Fuente: EU-Hydro (Copernicus).",
       udal_tamaina: "Población del municipio, en los tramos del informe de Gaindegia. Fuentes: Ministerio del Interior, municipales de 2023 (Hegoalde); INSEE (Iparralde).",
       ikasketa_maila: "Porcentaje de la población de 15 años y más con estudios superiores (FP de grado superior, universidad…), 2023: bajo, menos del 35 %; medio, 35–45 %; alto, 45 % o más. Fuentes: INE, censo anual (Hegoalde); INSEE, censo (Iparralde).",
-      errenta_maila: "Mediana de la renta disponible por unidad de consumo, 2023 (después de impuestos y con prestaciones; la renta del hogar repartida entre sus unidades de consumo: el primer adulto 1, cada otra persona de 14 años o más 0,5 y cada niño 0,3): baja, menos de 23.000 €; media, 23.000–26.000 €; alta, 26.000 € o más. Fuentes: INE, ADRH (Hegoalde); INSEE, Filosofi (Iparralde)." },
+      errenta_maila: "Mediana de la renta disponible por unidad de consumo, 2023 (después de impuestos y con prestaciones; la renta del hogar repartida entre sus unidades de consumo: el primer adulto 1, cada otra persona de 14 años o más 0,5 y cada niño 0,3): respecto a la mediana de referencia de Euskal Herria (las medianas municipales, ponderadas por población): por debajo del umbral de pobreza, menos del 60 % (criterio de la UE; solo si hay algún municipio); baja, 60–90 %; media, 90–110 %; alta, 110 % o más. Fuentes: INE, ADRH (Hegoalde); INSEE, Filosofi (Iparralde)." },
     ceraLbl: "Voto exterior (CERA)", egoiliarrak: "residentes", ceraBarne: "Ya está sumado en los resultados de arriba (territorios y total). La capa de participación del mapa va sin él (residentes).",
     ufAzalpena: "Diferencia entre los votos de un mismo partido o bloque en las municipales y en su equivalente foral: Juntas Generales en la CAV y Parlamento en Navarra (el mismo día), cantonales más cercanas en Iparralde. «Total»: la mitad de la suma de las diferencias, es decir, la parte del electorado que votó distinto.",
     botoAldaketaOsoa: "cambio total de voto", guztiraAukera: "Total (cambio total de voto)",
@@ -362,7 +364,8 @@ const TESTUAK = {
     alderdia: "Parti", ufDaturikEz: "Pas de données · écart municipales / forales", ufDaturikEzTip: "Pas de données pour calculer l'écart municipales / forales",
     aggOharra: "Voix additionnées par familles ; les listes locales ne comptent pas pour le vainqueur.",
     aggOharraEH: "Voix additionnées par familles ; si les listes locales, toutes ensemble, arrivent en tête, la zone est en gris.",
-    tarteAzalpena: { errenta_maila: "Revenu disponible médian par unité de consommation, 2023", ikasketa_maila: "Part des 15 ans ou plus diplômés du supérieur, 2023" },
+    erreferentzia: (e) => `Médiane de référence du Pays basque : ${e}.`,
+    tarteAzalpena: { errenta_maila: "Revenu disponible médian par unité de consommation, par rapport à celui du Pays basque, 2023", ikasketa_maila: "Part des 15 ans ou plus diplômés du supérieur, 2023" },
     deskribapena: "Description", desk: { "udalerriak": "Communes qui la composent", "oharra": "Cliquez sur une commune pour voir ses résultats." },
     zatia: "partie", balioIzena: { "ibai_arroa": "communes partagées : % des électeurs", "euskara_eremua": "% bascophones", "udal_tamaina": "habitants", "ikasketa_maila": "% diplômés du supérieur", "errenta_maila": "revenu (médiane)" },
     mailaDesk: { euskara_eremua: "Pourcentage de bascophones de chaque commune (parlent bien ou assez bien le basque) : zone bascophone plus de 50 %, mixte de 30 à 50 %, non bascophone moins de 30 %. Il s'agit de connaissance, pas d'usage. Sources : Eustat, recensement 2021 (CAB) ; Nastat, donnée de chaque zone linguistique, provisoire (Nafarroa Garaia) ; VIIe Enquête sociolinguistique, en trois zones (Iparralde).",
@@ -371,7 +374,7 @@ const TESTUAK = {
       ibai_arroa: "Les bassins de la carte du climat de MapaMeteo, les plus petits réunis à un voisin. En Hegoalde, par sections : chaque section dans son bassin, et la commune qui a des sections dans plusieurs, partagée (Donostia : Urumea, Oiartzun et Oria) ; aux élections sans sections, dans le bassin de la plus grande partie de ses électeurs. En Iparralde, dans celui de la plus grande partie du territoire. Source : EU-Hydro (Copernicus).",
       udal_tamaina: "Population de la commune, selon les tranches du rapport de Gaindegia. Sources : ministère de l'Intérieur espagnol, municipales 2023 (Hegoalde) ; INSEE (Iparralde).",
       ikasketa_maila: "Part de la population de 15 ans ou plus diplômée de l'enseignement supérieur, 2023 : faible, moins de 35 % ; moyen, 35–45 % ; élevé, 45 % ou plus. Sources : INE, recensement annuel (Hegoalde) ; INSEE, recensement (Iparralde).",
-      errenta_maila: "Médiane du revenu disponible par unité de consommation, 2023 (après impôts et prestations comprises ; le revenu du ménage divisé par ses unités de consommation : 1 pour le premier adulte, 0,5 pour chaque autre personne de 14 ans ou plus, 0,3 par enfant) : faible, moins de 23 000 € ; moyen, 23 000–26 000 € ; élevé, 26 000 € ou plus. Sources : INE, ADRH (Hegoalde) ; INSEE, Filosofi (Iparralde)." },
+      errenta_maila: "Médiane du revenu disponible par unité de consommation, 2023 (après impôts et prestations comprises ; le revenu du ménage divisé par ses unités de consommation : 1 pour le premier adulte, 0,5 pour chaque autre personne de 14 ans ou plus, 0,3 par enfant) : par rapport à la médiane de référence du Pays basque (les médianes communales, pondérées par la population) : sous le seuil de pauvreté, moins de 60 % (critère de l'UE ; seulement s'il y a une commune) ; faible, 60–90 % ; moyen, 90–110 % ; élevé, 110 % ou plus. Sources : INE, ADRH (Hegoalde) ; INSEE, Filosofi (Iparralde)." },
     ceraLbl: "Vote des résidents à l'étranger (CERA)", egoiliarrak: "résidents", ceraBarne: "Déjà inclus dans les résultats ci-dessus (territoires et total). La couche de participation de la carte ne le compte pas (résidents).",
     ufAzalpena: "Écart entre les voix d'un même parti ou bloc aux municipales et à leur équivalent « foral » : Juntes générales en CAB et Parlement en Navarre (le même jour), cantonales les plus proches en Iparralde. « Total » : la moitié de la somme des écarts, c'est-à-dire la part de l'électorat qui a voté différemment.",
     botoAldaketaOsoa: "changement de vote total", guztiraAukera: "Total (changement de vote total)",
@@ -468,7 +471,8 @@ const TESTUAK = {
     alderdia: "Party", ufDaturikEz: "No data · local / provincial gap", ufDaturikEzTip: "No data to compute the local / provincial gap",
     aggOharra: "Votes added up by party family; local lists do not count towards the winner.",
     aggOharraEH: "Votes added up by party family; if local lists, taken together, come first, the area is shown in grey.",
-    tarteAzalpena: { errenta_maila: "Median disposable income per consumption unit, 2023", ikasketa_maila: "People aged 15 and over with tertiary education, 2023" },
+    erreferentzia: (e) => `Euskal Herria reference median: ${e}.`,
+    tarteAzalpena: { errenta_maila: "Median disposable income per consumption unit, relative to Euskal Herria's, 2023", ikasketa_maila: "People aged 15 and over with tertiary education, 2023" },
     deskribapena: "Description", desk: { "udalerriak": "Municipalities in this area", "oharra": "Click a municipality to see its results." },
     zatia: "part", balioIzena: { "ibai_arroa": "split municipalities: % of electorate", "euskara_eremua": "% Basque speakers", "udal_tamaina": "inhabitants", "ikasketa_maila": "% tertiary education", "errenta_maila": "income (median)" },
     mailaDesk: { euskara_eremua: "Share of Basque speakers in each municipality (speak Basque well or quite well): Basque-speaking area over 50%, mixed 30–50%, Spanish/French-speaking under 30%. This is knowledge, not use. Sources: Eustat, 2021 census (BAC); Nastat, figure for each language zone, provisional (Nafarroa Garaia); 7th Sociolinguistic Survey, in three areas (Iparralde).",
@@ -477,7 +481,7 @@ const TESTUAK = {
       ibai_arroa: "The basins of MapaMeteo's climate map, the smallest merged with a neighbour. In Hegoalde, by census section: each section in its basin, and a municipality with sections in several, split (Donostia: Urumea, Oiartzun and Oria); in elections without sections, in the basin holding most of its electorate. In Iparralde, in the one with most of its land. Source: EU-Hydro (Copernicus).",
       udal_tamaina: "Municipal population, in the bands of Gaindegia's report. Sources: Spanish Ministry of the Interior, 2023 local elections (Hegoalde); INSEE (Iparralde).",
       ikasketa_maila: "Share of people aged 15 and over with tertiary education, 2023: low, under 35%; medium, 35–45%; high, 45% or more. Sources: INE, annual census (Hegoalde); INSEE, census (Iparralde).",
-      errenta_maila: "Median disposable income per consumption unit, 2023 (after taxes, including benefits; household income divided by its consumption units: 1 for the first adult, 0.5 for each other person aged 14 or over, 0.3 per child): low, under €23,000; medium, €23,000–26,000; high, €26,000 or more. Sources: INE, ADRH (Hegoalde); INSEE, Filosofi (Iparralde)." },
+      errenta_maila: "Median disposable income per consumption unit, 2023 (after taxes, including benefits; household income divided by its consumption units: 1 for the first adult, 0.5 for each other person aged 14 or over, 0.3 per child): relative to the Euskal Herria reference median (municipal medians weighted by population): below the poverty line, under 60% (EU criterion; only if any municipality falls there); low, 60–90%; medium, 90–110%; high, 110% or more. Sources: INE, ADRH (Hegoalde); INSEE, Filosofi (Iparralde)." },
     ceraLbl: "Vote from abroad (CERA)", egoiliarrak: "residents", ceraBarne: "Already added to the results above (territories and total). The map's turnout layer leaves it out (residents only).",
     ufAzalpena: "Gap between the votes of the same party or bloc in local elections and in their provincial-level counterpart: General Assemblies in the BAC and Parliament in Navarre (same day), the nearest cantonal elections in Iparralde. «Total»: half the sum of the gaps, i.e. the share of voters who voted differently.",
     botoAldaketaOsoa: "total vote shift", guztiraAukera: "Total (total vote shift)",
@@ -565,7 +569,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "8d179992942c";
+const VERSION = "66cc204bce15";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -1757,15 +1761,20 @@ async function joan(level, id) {
 function tarteAzalpena(id) {
   const l = mailaAktiboa(), izena = String(id).split("|")[1], t = ((INDEX.eremuTarteak || {})[l] || {})[izena];
   if (!String(id).startsWith("Euskal Herria|") || !t) return "";
-  const u = (v) => `${fmt(v)}\u00a0${l === "errenta_maila" ? "€" : "%"}`, [lo, hi] = t;  // sin partir: «23.000 € – 26.000 €»
+  const u = (v) => `${fmt(v)}\u00a0%`, [lo, hi] = t;  // sin partir: «35 % – 45 %»
   const tartea = lo == null ? `<\u00a0${u(hi)}` : hi == null ? `≥\u00a0${u(lo)}` : `${u(lo)}\u00a0–\u00a0${u(hi)}`;
-  return `<p class="hint">${esc((T.tarteAzalpena || {})[l] || "")}: <b>${tartea}</b></p>`;
+  // renta: en % de la mediana de referencia de Euskal Herria, y lo que es en euros
+  const erref = INDEX.errentaErreferentzia, euro = (v) => `${fmt(Math.round(erref * v / 100 / 10) * 10)}\u00a0€`;
+  const euroz = l === "errenta_maila" && erref ? ` (${lo == null ? `<\u00a0${euro(hi)}` : hi == null ? `≥\u00a0${euro(lo)}` : `${euro(lo)}\u00a0–\u00a0${euro(hi)}`})` : "";
+  const erreferentzia = l === "errenta_maila" && erref ? ` ${T.erreferentzia(`${fmt(erref)}\u00a0€`)}` : "";
+  return `<p class="hint">${esc((T.tarteAzalpena || {})[l] || "")}: <b>${tartea}</b>${euroz}.${erreferentzia}</p>`;
 }
 // ---- «Deskribapena»: qué es una zona de toda Euskal Herria y qué municipios la forman (data/eremuak.json) ----
 let EREMU_DATUAK = null, eremuPromesa = null;  // los datos, cuando ya han llegado; la petición, una sola vez
 const eremuDatuak = () => (EREMU_DATUAK ? Promise.resolve(EREMU_DATUAK)
   : (eremuPromesa = eremuPromesa || load("data/eremuak.json").then((d) => (EREMU_DATUAK = d)).catch((e) => { eremuPromesa = null; throw e; })));
-const EREMU_BALIOA = { euskara_eremua: (v) => pct(v), udal_tamaina: (v) => fmt(v), ikasketa_maila: (v) => pct(v), errenta_maila: (v) => `${fmt(v)}\u00a0€`,
+const EREMU_BALIOA = { euskara_eremua: (v) => pct(v), udal_tamaina: (v) => fmt(v), ikasketa_maila: (v) => pct(v),
+  errenta_maila: (v) => `${fmt(v)}\u00a0€ · ${fmt(Math.round(100 * v / (INDEX.errentaErreferentzia || v)))}\u00a0%`,  // y su % de la mediana de referencia
   ibai_arroa: (v) => `${T.zatia} · ${pct(v)}` };  // cuencas: solo los municipios partidos, con el % de su censo en esta
 const HERRIALDE_ORDENA = ["Araba", "Bizkaia", "Gipuzkoa", "Nafarroa", "Lapurdi", "Behe Nafarroa", "Zuberoa"];
 // Los municipios de la zona por herrialdes (los enclaves, al final), cada uno con su dato: [[herrialde, [[ine, izena, balioa]]]]
