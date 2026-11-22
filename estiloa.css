@@ -649,3 +649,9 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f
 .eremu-legenda .zlg[aria-pressed="false"] .sw[data-z="1"] { background-image: repeating-linear-gradient(45deg, var(--zeharra) 0 1.3px, transparent 1.3px 4px); }
 .eremu-legenda .zlg[aria-pressed="false"] .sw[data-z="2"] { background-image: repeating-linear-gradient(90deg, var(--zeharra) 0 1.3px, transparent 1.3px 4px); }
 .eremu-legenda .zlg[aria-pressed="false"] .sw[data-z="3"] { background-image: repeating-linear-gradient(0deg, var(--zeharra) 0 1.3px, transparent 1.3px 4px); }
+
+/* «Bozken pisua»: los círculos de referencia de la leyenda (radio --r, el del mapa con el zoom de ahora) */
+.legend.bola-legenda { flex-direction: row; flex-wrap: wrap; gap: 18px; align-items: flex-end; }
+.bola-legenda .li { flex-direction: column; gap: 4px; align-items: center; }
+.bola-legenda .bola { --r: 6px; display: block; width: calc(2 * var(--r)); height: calc(2 * var(--r)); border-radius: 50%;
+  background: var(--muted); opacity: .8; border: 1px solid var(--line-ui); }

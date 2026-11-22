@@ -7,7 +7,7 @@
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Euskal Herriko Hauteskunde Behatokia</title>
-<script src="tema.js?v=8ab281a0e73f"></script>
+<script src="tema.js?v=8fe2f0efcd1a"></script>
 <meta name="description" content="Euskal Herriko hauteskunde-emaitzak mapa batean: Hegoaldea eta Iparraldea, udal hauteskundeetatik Europako Parlamentura, udalerrika eta sekzioka, 2011tik.">
 <link rel="canonical" href="https://hautesbehatokia.eus/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -21,17 +21,17 @@
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="eu_ES">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" href="data/index.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/eremuak_eh.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/eremuak_eremua.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/eremuak_territorio.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/izenak.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/maskarak.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="data/index.json?v=8fe2f0efcd1a" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/eremuak_eh.json?v=8fe2f0efcd1a" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/eremuak_eremua.json?v=8fe2f0efcd1a" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/eremuak_territorio.json?v=8fe2f0efcd1a" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/izenak.json?v=8fe2f0efcd1a" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/maskarak.json?v=8fe2f0efcd1a" as="fetch" crossorigin="anonymous">
 <link rel="modulepreload" href="vendor/maplibre-gl.mjs">
 <link rel="modulepreload" href="vendor/maplibre-gl-shared.mjs">
 </head>
 <body>
-<link rel="stylesheet" href="estiloa.css?v=8ab281a0e73f">
+<link rel="stylesheet" href="estiloa.css?v=8fe2f0efcd1a">
 
 <div id="app">
   <header id="top">
@@ -72,6 +72,7 @@
     <button class="mode" data-mode="turnout" aria-pressed="false"><span class="sw"></span><span data-t="partehartzeaIzenb">Parte-hartzea</span><kbd>T</kbd></button>
     <button class="mode" data-mode="compare" aria-pressed="false"><span class="sw"></span><span data-t="konparatuBiUrte">Konparatu bi urte</span><kbd>C</kbd></button>
     <button class="mode" data-mode="udalforal" aria-pressed="false"><span class="sw"></span><span data-t="udalForu">Udal / foru aldea</span><kbd>U</kbd></button>
+    <button class="mode" data-mode="pisua" aria-pressed="false"><span class="sw"></span><span data-t="pisua">Bozken pisua</span><kbd>B</kbd></button>
     <select id="ufsel" class="sel" aria-label="Udal / foru aldea: alderdia" data-t-aria="ufselAria" hidden></select>
     <div class="lbl" data-t="eremua">Eremua</div>
     <select id="level" class="sel" aria-label="Eremua" data-t-aria="eremua">
@@ -102,6 +103,7 @@
       <dt><kbd>Q</kbd><kbd>E</kbd></dt><dd data-t="lagQE">Aurreko / hurrengo hauteskundea</dd>
       <dt><kbd>W</kbd><kbd>M</kbd><kbd>T</kbd></dt><dd data-t="lagWMT">Irabazlea, lehian dauden eremuak, parte-hartzea</dd>
       <dt><kbd>C</kbd><kbd>U</kbd></dt><dd data-t="lagCU">Konparatu bi urte, udal / foru aldea</dd>
+      <dt><kbd>B</kbd></dt><dd data-t="lagB">Bozken pisua: boto kopurua borobiletan</dd>
       <dt><kbd>S</kbd></dt><dd data-t="lagS">Satelite-mapa erakutsi / ezkutatu</dd>
       <dt><kbd>I</kbd></dt><dd data-t="lagItxura">Itxura argia / iluna</dd>
       <dt><kbd>L</kbd></dt><dd data-t="lagL">Ezkerreko menua erakutsi / ezkutatu</dd>
@@ -116,7 +118,7 @@
   <div id="loading" data-t="kargatzen">Kargatzen…</div>
 </div>
 
-<script type="module" src="app.js?v=8ab281a0e73f"></script>
+<script type="module" src="app.js?v=8fe2f0efcd1a"></script>
 
 </body>
 </html>
