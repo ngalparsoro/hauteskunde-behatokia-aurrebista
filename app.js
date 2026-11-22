@@ -67,10 +67,11 @@ const CX = 250, CY = 250, R_HUB = 46, R_K0 = 50, R_K1 = 118, R_I0 = 124, R_I1 = 
 const SVGNS = "http://www.w3.org/2000/svg";
 // Sala de situación: aviso al cambiar de nivel con el zoom, teclas de modo y minimapa
 // «Bozken pisua»: en cada sección censal (en Iparralde, cada commune), un círculo por fuerza con área proporcional a sus
-// votos, a escala del terreno (radio en metros = BOLA_M × √votos: 400 votos, 80 m), así que crece con el zoom y se compara
+// votos, a escala del terreno (radio en metros = BOLA_M × √votos: 400 votos, 50 m), así que crece con el zoom y se compara
 // igual en todo el mapa; los muy pequeños, como mínimo BOLA_MIN px. Las BOLA_INDARRAK primeras fuerzas de cada sección.
-// Van dentro de su sección siempre que caben (con 4 m, nueve de cada diez) y, si no, tocando su borde (03-mapa.js, bolakKokatu).
-const BOLA_M = 4, BOLA_MIN = 1.5, BOLA_INDARRAK = 5;
+// Van dentro de su sección siempre que caben y, si no, tocando su borde (03-mapa.js, bolakKokatu): con 2,5 m caben en la
+// sección el 99 % de los círculos (con 4 m, en las ciudades los de una sección ocupan más que ella).
+const BOLA_M = 2.5, BOLA_MIN = 1.5, BOLA_INDARRAK = 5;
 const TEKLA_MODUAK = { w: "winner", m: "margin", t: "turnout", c: "compare", u: "udalforal", b: "pisua" };
 // Argibidea (puntero): solo los partidos o bloques a esta distancia (puntos) del primero, los que optan a gobernar
 const LEHIA_MARJINA = 10;
@@ -564,7 +565,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "2fc16af2d9ce";
+const VERSION = "8d179992942c";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -1043,7 +1044,7 @@ function color(level, id) {
   if (state.modua === "winner") return r ? FAM[r.gf] || FAM.LOCAL : NODATA;
   if (state.modua === "margin") return r ? (r.m == null ? UNCONTESTED : bin(r.m, MARGIN_BINS)) : NODATA;
   if (state.modua === "turnout") return r ? bin(r.pE ?? r.part, TURNOUT_BINS) : NODATA;  // la de los residentes, sin el CERA
-  if (state.modua === "pisua") return r ? "rgba(0,0,0,0)" : NODATA;  // mapa negro: el color va en los círculos (bolakEguneratu)
+  if (state.modua === "pisua") return "rgba(0,0,0,0)";  // mapa negro (también sin datos): el color va en los círculos (bolakEguneratu)
   // konparatu: irabazlea aldatu den ala ez, aukeratutako bi hauteskundeen artean
   const oy = state.konparatu;
   if (!oy) return NODATA;
@@ -1206,6 +1207,10 @@ capas.push(
 // debajo de los pequeños.
 const BOLA_PX0 = 114500;
 sources.bolak = { type: "geojson", data: { type: "FeatureCollection", features: [] } };
+// …y el contorno de Euskal Herria: solo los anillos de fuera (sin los huecos de los montes comunales: Urbasa, Aralar…)
+sources["eh-ingurua"] = { type: "geojson", data: { type: "FeatureCollection", features: [] } };
+capas.push({ id: "eh-ingurua", type: "line", source: "eh-ingurua", layout: { visibility: "none" },
+  paint: { "line-color": "#FFFFFF", "line-width": .9, "line-opacity": .75 } });
 capas.push({ id: "bolak", type: "circle", source: "bolak", layout: { visibility: "none", "circle-sort-key": ["-", 0, ["get", "rm"]] },
   paint: { "circle-color": ["get", "c"], "circle-opacity": 1, "circle-stroke-color": MAPA_K.nabarmen, "circle-stroke-width": 0,
            "circle-radius": ["interpolate", ["exponential", 2], ["zoom"],
@@ -1310,23 +1315,28 @@ function mugakIragazi(enklabeakIkusi) {
 // (móvil lento, pestaña en segundo plano, datos ya en caché). arrancar() (10-abiarazi.js) lo aplica todo al cargar.
 // «Bozken pisua»: sin satélite, fondo negro y las divisiones en líneas blancas finas (el color, solo en los círculos); fuera
 // del modo, lo de la paleta
-const MUGA_ZABALERAK = {};
 function pisuaGeruzak() {
   const piz = state.modua === "pisua", zuria = "#FFFFFF", sel = ["boolean", ["feature-state", "sel"], false], hov = ["boolean", ["feature-state", "hover"], false];
   map.setPaintProperty("fondo", "background-color", piz ? "#000000" : MAPA_K.fondoa);
   for (const l of ["sat", "orto"]) map.setLayoutProperty(l, "visibility", state.satelitea && !piz ? "visible" : "none");
-  for (const [l, kol, op] of [["muga-udal", MAPA_K.muga, .8], ["muga-esk", MAPA_K.mugaEsk, .55], ["muga-lur", MAPA_K.mugaLur, .85]]) {
-    if (!(l in MUGA_ZABALERAK)) MUGA_ZABALERAK[l] = map.getPaintProperty(l, "line-width");  // la de siempre, para volver a ella
-    map.setPaintProperty(l, "line-color", piz ? zuria : kol);
-    map.setPaintProperty(l, "line-opacity", piz ? { "muga-udal": .35, "muga-esk": .5, "muga-lur": .75 }[l] : op);
-    map.setPaintProperty(l, "line-width", piz ? { "muga-udal": .4, "muga-esk": .6, "muga-lur": .9 }[l] : MUGA_ZABALERAK[l]);
-  }
+  // de las divisiones, solo el contorno de Euskal Herria (el del nivel «eh», en blanco); ni herrialdes, ni comarcas, ni municipios
+  for (const l of ["muga-udal", "muga-esk", "muga-lur"]) map.setLayoutProperty(l, "visibility", piz ? "none" : "visible");
   for (const k in GEO) {
-    // (las secciones, sin borde: solo la que está bajo el puntero, en blanco, y la elegida, en oro)
+    // (las secciones, sin borde: solo la que está bajo el puntero, en blanco, y la elegida, en oro; y sin las rayas de los
+    // huecos sin datos: el mapa, negro)
+    const ikusgai = map.getLayoutProperty(k + "-line", "visibility") || "none";
     map.setPaintProperty(k + "-line", "line-color", ["case", sel, MAPA_K.nabarmen, hov, piz ? zuria : MAPA_K.nabarmen, piz ? zuria : MAPA_K.muga]);
-    map.setPaintProperty(k + "-line", "line-width", ["case", sel, piz ? 1.4 : 2.25, hov, piz ? 1.2 : 2.2, piz ? (k === "sec" ? 0 : .35) : .7]);
-    map.setPaintProperty(k + "-line", "line-opacity", piz ? .6 : 1);
-    map.setLayoutProperty(k + "-halo", "visibility", piz ? "none" : map.getLayoutProperty(k + "-line", "visibility") || "none");
+    map.setPaintProperty(k + "-line", "line-width", ["case", sel, piz ? 1.4 : 2.25, hov, piz ? 1.2 : 2.2, piz ? 0 : .7]);
+    map.setPaintProperty(k + "-line", "line-opacity", piz ? .75 : 1);
+    map.setLayoutProperty(k + "-halo", "visibility", piz ? "none" : ikusgai);
+    map.setLayoutProperty(k + "-hutsa", "visibility", piz ? "none" : ikusgai);
+  }
+  // el contorno de Euskal Herria (o de lo que cubre la elección): los anillos de fuera de su polígono
+  map.setLayoutProperty("eh-ingurua", "visibility", piz ? "visible" : "none");
+  if (piz) {
+    const lerroak = GEO.eh.features.filter((f) => f.id === estaldura()).flatMap((f) =>
+      (f.geometry.type === "Polygon" ? [f.geometry.coordinates] : f.geometry.coordinates).map((pol) => pol[0]));
+    map.getSource("eh-ingurua").setData({ type: "Feature", properties: {}, geometry: { type: "MultiLineString", coordinates: lerroak } });
   }
   ortoKreditua();
 }
