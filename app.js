@@ -551,7 +551,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "de2e63db2bd1";
+const VERSION = "8ab281a0e73f";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -1087,9 +1087,11 @@ function garbitu(key) {
   // zona sociodemográfica (tamaño, estudios, renta) elegida: las demás, rayadas, cada una en una dirección (la elegida,
   // limpia); en las geográficas no hace falta: cada zona es un trozo de mapa que se ve
   if (ehZonak && ((INDEX.mailaTaldeak || {}).soziodemografikoak || []).includes(key)) {
-    const hau = String(state.hautatua || ""), besteak = [...new Set(feats.map(f => String(f.id)))].filter(i => i !== hau).sort();
-    const zehar = feats.some(f => String(f.id) === hau) ? new Map(besteak.map((i, n) => [i, `zeharra-${n % ZEHARRAK.length}`])) : new Map();
-    for (const f of feats) { const m = !f.properties.z && zehar.get(String(f.id)); if (m) f.properties.mz = m; else delete f.properties.mz; }
+    const hau = String(state.hautatua || ""), hautatuta = feats.some(f => String(f.id) === hau);
+    for (const f of feats) {
+      const m = hautatuta && String(f.id) !== hau && !f.properties.z ? zeharra(key, f.properties.name) : null;
+      if (m) f.properties.mz = m; else delete f.properties.mz;
+    }
   }
   // una elección concreta: solo se dibuja el territorio que vota en ella (lo de fuera ni se raya)
   const ikusgai = bakarrikDa() ? feats.filter(f => f.properties.z !== "kanpoan") : feats;
@@ -1170,7 +1172,10 @@ for (const k in GEO) capas.push(
 const ENKLABEAK = INDEX.enklabeak || [];
 sources.enklabeak = { type: "geojson", data: { type: "FeatureCollection", features: [] } };
 capas.push({ id: "enklabeak-fill", type: "fill", source: "enklabeak", layout: { visibility: "none" },
-  paint: { "fill-color": ["coalesce", ["get", "c"], NODATA], "fill-opacity": opakutasunak()[2] } });
+  paint: { "fill-color": ["coalesce", ["get", "c"], NODATA], "fill-opacity": opakutasunak()[2] } },
+  // la trama de su zona sociodemográfica cuando hay otra elegida, como el resto de la zona
+  { id: "enklabeak-zeharra", type: "fill", source: "enklabeak", layout: { visibility: "none" }, filter: ["has", "mz"],
+    paint: { "fill-pattern": ["get", "mz"] } });
 // Límites de los niveles superiores, siempre encima aunque el mapa muestre un nivel inferior:
 // herrialdes (dorado, más grueso), eskualdeak y, con las secciones, municipios
 sources["muga-lur"] = { type: "geojson", data: GEO.territorio };
@@ -1197,6 +1202,9 @@ if (MUGIKORRA.matches && !(POS_URL.length === 3 && POS_URL.every(Number.isFinite
 // («zeharra-0…3»: / \ | —), más finas y en el color que destaca sobre los de los partidos
 const ZEHARRAK = [[[0, 1, 1, 0], [-0.5, 0.5, 0.5, -0.5], [0.5, 1.5, 1.5, 0.5]], [[0, 0, 1, 1], [-0.5, 0.5, 0.5, 1.5], [0.5, -0.5, 1.5, 0.5]],
                   [[0.5, 0, 0.5, 1]], [[0, 0.5, 1, 0.5]]];
+// la trama de una zona: la de su puesto en el orden del nivel (index.json, eremuOrdena), siempre la misma
+const zeharraZenb = (l, izena) => { const o = ((INDEX.eremuOrdena || {})[l] || []).indexOf(izena); return (o < 0 ? 0 : o) % ZEHARRAK.length; };
+const zeharra = (l, izena) => `zeharra-${zeharraZenb(l, izena)}`;
 map.on("styleimagemissing", (e) => {
   const zm = /^zeharra-(\d)$/.exec(e.id);
   if (zm && !map.hasImage(e.id)) {
@@ -1242,15 +1250,19 @@ function enklabeakEzarri() {
   // capa propia por encima del nivel municipal: con poco zoom (vista de Euskal Herria), el color del conjunto
   const a = autoMailak(), eh = a.find((x) => x[0] === "eh"), muni = a.find((x) => x[0] === "muni");
   const goikoa = state.maila === "auto" ? true : !["muni", "sec"].includes(state.maila);
-  map.setLayoutProperty("enklabeak-fill", "visibility", ikusi && goikoa && GEO.muni.features.length ? "visible" : "none");
+  for (const geruza of ["enklabeak-fill", "enklabeak-zeharra"])
+    map.setLayoutProperty(geruza, "visibility", ikusi && goikoa && GEO.muni.features.length ? "visible" : "none");
   if (!ikusi || !GEO.muni.features.length) return;
-  map.setLayerZoomRange("enklabeak-fill", 0, state.maila === "auto" ? muni[1] : 24);
+  for (const geruza of ["enklabeak-fill", "enklabeak-zeharra"]) map.setLayerZoomRange(geruza, 0, state.maila === "auto" ? muni[1] : 24);
+  const soz = ((INDEX.mailaTaldeak || {}).soziodemografikoak || []).includes(mailaAktiboa());
+  const hautatuta = soz && String(state.hautatua || "").startsWith("Euskal Herria|");
   const ehKolorea = color("eh", estaldura()), ehBista = state.maila === "eh";
   // en una zona de toda Euskal Herria (euskara, adierazleak) el enclave cuenta en ella: su color
   const l = mailaAktiboa(), zonaId = (i) => { const z = (INDEX.enklabeZonak || {})[i]; return z && z[l] ? `Euskal Herria|${z[l]}` : null; };
   const fs = GEO.muni.features.filter((f) => ENKLABEAK.includes(String(f.id))).map((f) => { const zid = zonaId(String(f.id));
+    const mz = hautatuta && zid && zid !== state.hautatua ? zeharra(l, zid.split("|")[1]) : null;
     return { ...f, properties: { ...f.properties, c: ehBista ? ehKolorea : zid ? color(l, zid) : color("muni", String(f.id)), ceh: ehKolorea,
-                                 ...(zid ? { zid } : {}) } }; });
+                                 ...(zid ? { zid } : {}), ...(mz ? { mz } : {}) } }; });
   map.getSource("enklabeak").setData({ type: "FeatureCollection", features: fs });
   enklabeakNabarmendu();
   // en automático: color de Euskal Herria mientras se ve el nivel «eh», luego el suyo
@@ -1361,7 +1373,7 @@ function hautatu(id, src, gero = false) {
   if (id) { sel = { source: src || mailaAktiboa(), id }; markatu(sel, "sel", true); }
   enklabeakNabarmendu();
   const l = mailaAktiboa();  // zonas sociodemográficas: las rayas de las no elegidas
-  if (((INDEX.mailaTaldeak || {}).soziodemografikoak || []).includes(l)) { sucio.add(l); garbitu(l); }
+  if (((INDEX.mailaTaldeak || {}).soziodemografikoak || []).includes(l)) { sucio.add(l); garbitu(l); if (estiloaPrest) enklabeakEzarri(); }
   if (gero) arnasa().then(() => { if (state.hautatua === id) margotu(); }); else margotu();
 }
 map.on("moveend", () => urlaIdatzi());
@@ -1610,7 +1622,24 @@ $("#body").addEventListener("click", (e) => {
   const b = e.target.closest("[data-muni]"); if (!b) return;
   state.fitxa = "emaitzak"; joan("muni", b.dataset.muni);
 });
-function margotu() { if (typeof izenakBerritu === "function") izenakBerritu(); ufSelektorea(); fitxakEguneratu(); urlaIdatzi(); $("#body").innerHTML = state.fitxa === "eserlekuak" ? eserlekuakOrria() : state.fitxa === "deskribapena" ? deskribapenaOrria() : state.fitxa === "bilakaera" ? bilakaeraOrria() : state.hautatua ? xehetasuna(state.hautatua) : laburpena(); const c = $("#closebtn"); if (c) c.addEventListener("click", () => hautatu(null));
+// ---- leyenda de las zonas sociodemográficas (tamaño, estudios, renta), bajo el selector de nivel: cada zona con su color
+// (quién gana en ella) y su trama (la que lleva en el mapa cuando hay otra elegida); pulsarla la elige ----
+function legendaMargotu() {
+  const box = $("#eremulegenda"); if (!box) return;
+  const l = mailaAktiboa(), ordena = ((INDEX.mailaTaldeak || {}).soziodemografikoak || []).includes(l) ? (INDEX.eremuOrdena || {})[l] || [] : [];
+  const daude = new Set((GEO[l] || { features: [] }).features.map(f => f.properties.name));
+  const zonak = ordena.filter(n => daude.has(n));
+  box.hidden = !zonak.length;
+  if (!zonak.length) { box.innerHTML = ""; return; }
+  box.setAttribute("aria-label", T.mailak[l] || LEVELS[l] || l);
+  box.innerHTML = zonak.map(n => { const id = `Euskal Herria|${n}`, bai = state.hautatua === id;
+    return `<button type="button" class="zlg" data-zona="${esc(id)}" aria-pressed="${bai}"><i class="sw" data-z="${zeharraZenb(l, n)}" style="--k:${color(l, id)}"></i><span>${esc(n)}</span></button>`; }).join("");
+}
+$("#eremulegenda").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-zona]"); if (!b) return;
+  hautatu(state.hautatua === b.dataset.zona ? null : b.dataset.zona, mailaAktiboa());
+});
+function margotu() { if (typeof izenakBerritu === "function") izenakBerritu(); ufSelektorea(); fitxakEguneratu(); legendaMargotu(); urlaIdatzi(); $("#body").innerHTML = state.fitxa === "eserlekuak" ? eserlekuakOrria() : state.fitxa === "deskribapena" ? deskribapenaOrria() : state.fitxa === "bilakaera" ? bilakaeraOrria() : state.hautatua ? xehetasuna(state.hautatua) : laburpena(); const c = $("#closebtn"); if (c) c.addEventListener("click", () => hautatu(null));
   const mu = $("#munira"); if (mu) mu.addEventListener("click", () => joan("muni", String(state.hautatua).slice(0, 5))); ogiApurrak(); }
 // ---- controles ----
 // Desplegable de convocatorias de la categoría, agrupadas por zona (las más recientes primero)
@@ -2350,7 +2379,7 @@ function folioSekzioak(z, k) {
 function folioBilakaera(z, kat, bil) {
   if (!bil) return [];
   const H = bil.hk ? bil.hk[kat] || {} : Object.fromEntries(Object.entries(bil.h || {}).filter(([k]) => INDEX.kategoriak[kat].includes(k)));
-  return Object.keys(H).sort((a, b) => dataZ(a) - dataZ(b)).map((k) => ({ k, e: H[k] }));
+  return Object.keys(H).filter((k) => bilSerian(kat, k)).sort((a, b) => dataZ(a) - dataZ(b)).map((k) => ({ k, e: H[k] }));  // como «Bilakaera»
 }
 const folioPct = (e, f) => { const r = e[3].find((x) => x[0] === f); return r ? r[1] : null; };
 // Puntos de más o de menos que su herrialde, su ámbito y Euskal Herria, familia a familia
@@ -2634,6 +2663,7 @@ function foGrafikoa(doc, z, kat, x, y, w, h, D) {
   const azk = bil.at(-1).e;
   const fam = [...new Set(bil.flatMap((b) => b.e[3].map((p) => p[0])))]
     .sort((a, b) => (folioPct(azk, b) ?? -1) - (folioPct(azk, a) ?? -1)).slice(0, 5);
+  for (const f of BIL_BETI) if (!fam.includes(f) && bil.some((b) => folioPct(b.e, f))) fam.push(f);  // como «Bilakaera»
   const gx = x + 7, gy = y + 6, gw = w - 7, gh = h - 20;
   const gehienez = Math.max(...bil.flatMap((b) => fam.map((f) => folioPct(b.e, f) || 0)));
   const goia = Math.max(10, Math.min(70, 10 * (Math.floor(gehienez / 10) + 1)));
@@ -2879,6 +2909,13 @@ const BILAKAERA = {};  // fichero → datos (o null si no hay)
 let bilKat = null;     // tipo elegido en la ficha; null = el del mapa
 let bilMota = null;    // dentro del tipo, la elección (p. ej. legislativas o presidenciales en Iparralde)
 const BIL_GUTXIENEZ = 4, BIL_LERRO_MAX = 7;  // una familia sale en el gráfico si llega al 4 % alguna vez; como mucho 7
+// bloques que salen siempre que estén, aunque no lleguen al 4 %: EH Bai con las izquierdas (legislativas de 2024, en el Nouveau
+// Front Populaire), que es un bloque propio y no el de EH Bai de siempre
+const BIL_BETI = ["EH Bai + Ezkerrak"];
+// En «Estatua», una sola serie: las elecciones a los parlamentos de los estados, generales de Hegoalde y legislativas de
+// Iparralde por orden (en el total y las zonas de toda Euskal Herria, cada una con la última de la otra zona, como la línea
+// de tiempo); sin las presidenciales (no son de un parlamento) y sin elegir entre tipos
+const bilSerian = (kat, k) => kat !== "estatu" || mota(k) !== "presidenciales";
 
 // Lo que enseña la ficha: el municipio de lo seleccionado (un municipio o una de sus secciones / bulegos), la zona del
 // nivel del mapa (Bizkaia, Busturialdea…) o, sin nada elegido, el total. {fitx, gakoa (zona dentro del fichero), maila}
@@ -2945,9 +2982,10 @@ function bilakaeraOrria() {
   const katak = KATS.filter(t => INDEX.kategoriak[t].some(k => hOf(t)[k]));
   if (!katak.length) return buru + `<p class="hint">${T.daturikEz}</p>`;
   const kat = katak.includes(bilKat || state.mapa) ? (bilKat || state.mapa) : katak[0], H = hOf(kat);
-  let ks = INDEX.kategoriak[kat].filter(k => H[k]).sort((a, b) => dataZ(a) - dataZ(b));
-  // Varias elecciones en el mismo tipo (Iparralde: legislativas y presidenciales…): una línea por elección, no mezcladas
-  const motak = [...new Set(ks.map(mota))];
+  let ks = INDEX.kategoriak[kat].filter(k => H[k] && bilSerian(kat, k)).sort((a, b) => dataZ(a) - dataZ(b));
+  // Varias elecciones en el mismo tipo (Foralak: Juntas Generales y regionales…): una línea por elección, no mezcladas
+  // (en «Estatua», no: una sola serie)
+  const motak = kat === "estatu" ? [] : [...new Set(ks.map(mota))];
   const zenbat = (m) => ks.filter(k => mota(k) === m).length;
   const m = motak.includes(bilMota) ? bilMota : motak.includes(mota(state.hauteskundea)) ? mota(state.hauteskundea) : motak.slice().sort((a, b) => zenbat(b) - zenbat(a))[0];
   if (motak.length > 1) ks = ks.filter(k => mota(k) === m);
@@ -2955,8 +2993,9 @@ function bilakaeraOrria() {
   const chips = `<div class="chips bil-katak" role="group" aria-label="${T.hauteskundeMotak}">${katak.map(t => `<button type="button" class="chip" data-bilkat="${t}" aria-pressed="${t === kat}">${T.kat[t] || t}</button>`).join("")}</div>`;
   // familias del gráfico: las que llegan al 4 % alguna vez, por su máximo
   const max = {}; for (const k of ks) for (const [f, p] of H[k][3]) max[f] = Math.max(max[f] || 0, p);
-  const lerroak = Object.keys(max).filter(f => max[f] >= BIL_GUTXIENEZ).sort((a, b) => max[b] - max[a]).slice(0, BIL_LERRO_MAX)
-    .sort((a, b) => (bilPct(H[ks[ks.length - 1]], b) ?? -1) - (bilPct(H[ks[ks.length - 1]], a) ?? -1));  // leyenda: por el último resultado
+  const lerroak = Object.keys(max).filter(f => max[f] >= BIL_GUTXIENEZ).sort((a, b) => max[b] - max[a]).slice(0, BIL_LERRO_MAX);
+  for (const f of BIL_BETI) if (max[f] && !lerroak.includes(f)) lerroak.push(f);
+  lerroak.sort((a, b) => (bilPct(H[ks[ks.length - 1]], b) ?? -1) - (bilPct(H[ks[ks.length - 1]], a) ?? -1));  // leyenda: por el último resultado
   const azkena = ks[ks.length - 1], aurrekoa = ks[ks.length - 2];
   // Δ solo entre elecciones que cubren lo mismo
   const legenda = lerroak.map(f => { const v = bilPct(H[azkena], f), a = aurrekoa && bilGakoa(H[aurrekoa]) === bilGakoa(H[azkena]) ? bilPct(H[aurrekoa], f) : null;

@@ -7,7 +7,7 @@
 <meta name="referrer" content="no-referrer">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Euskal Herriko Hauteskunde Behatokia</title>
-<script src="tema.js?v=de2e63db2bd1"></script>
+<script src="tema.js?v=8ab281a0e73f"></script>
 <meta name="description" content="Euskal Herriko hauteskunde-emaitzak mapa batean: Hegoaldea eta Iparraldea, udal hauteskundeetatik Europako Parlamentura, udalerrika eta sekzioka, 2011tik.">
 <link rel="canonical" href="https://hautesbehatokia.eus/">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -21,17 +21,17 @@
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="eu_ES">
 <meta name="twitter:card" content="summary_large_image">
-<link rel="preload" href="data/index.json?v=de2e63db2bd1" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/eremuak_eh.json?v=de2e63db2bd1" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/eremuak_eremua.json?v=de2e63db2bd1" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/eremuak_territorio.json?v=de2e63db2bd1" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/izenak.json?v=de2e63db2bd1" as="fetch" crossorigin="anonymous">
-<link rel="preload" href="geo/maskarak.json?v=de2e63db2bd1" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="data/index.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/eremuak_eh.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/eremuak_eremua.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/eremuak_territorio.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/izenak.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
+<link rel="preload" href="geo/maskarak.json?v=8ab281a0e73f" as="fetch" crossorigin="anonymous">
 <link rel="modulepreload" href="vendor/maplibre-gl.mjs">
 <link rel="modulepreload" href="vendor/maplibre-gl-shared.mjs">
 </head>
 <body>
-<link rel="stylesheet" href="estiloa.css?v=de2e63db2bd1">
+<link rel="stylesheet" href="estiloa.css?v=8ab281a0e73f">
 
 <div id="app">
   <header id="top">
@@ -79,6 +79,7 @@
       <option value="muni" data-t="mailak.muni">Udalerriak</option>
       <option value="sec" data-t="mailak.sec">Sekzio zentsalak</option>
     </select>
+    <div id="eremulegenda" class="eremu-legenda" role="group" hidden></div>
   </aside>
   <aside id="hud">
     <button id="heldulekua" class="heldulekua" aria-expanded="false" aria-controls="body" aria-label="Panela zabaldu" data-t-aria="panelaZabaldu"><span></span></button>
@@ -115,7 +116,7 @@
   <div id="loading" data-t="kargatzen">Kargatzen…</div>
 </div>
 
-<script type="module" src="app.js?v=de2e63db2bd1"></script>
+<script type="module" src="app.js?v=8ab281a0e73f"></script>
 
 </body>
 </html>

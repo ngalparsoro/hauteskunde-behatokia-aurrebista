@@ -633,3 +633,19 @@ body { margin: 0; background: var(--bg); color: var(--ink); font-family: var(--f
 .ibtn.ikono svg { display: block; }
 #tema .ilargia, #tema[aria-pressed="true"] .eguzkia { display: none; }
 #tema[aria-pressed="true"] .ilargia { display: block; }
+
+
+/* leyenda de las zonas sociodemográficas, bajo el selector de nivel: color de quien gana y trama de cada zona (la del mapa
+   cuando hay otra elegida: / \ | —); la elegida, limpia y en oro */
+.eremu-legenda { display: flex; flex-direction: column; gap: 4px; margin-top: 8px; --zeharra: rgba(10,16,22,.55); }
+[data-mapa="argi"] .eremu-legenda { --zeharra: rgba(255,255,255,.7); }
+.eremu-legenda .zlg { display: flex; align-items: center; gap: 8px; padding: 5px 8px; border: 1px solid var(--line-2); background: var(--chrome);
+  -webkit-backdrop-filter: var(--chrome-blur); backdrop-filter: var(--chrome-blur); color: var(--muted); font: 500 11.5px var(--f-mono);
+  letter-spacing: .02em; text-align: left; cursor: pointer; width: 100%; max-width: 240px; }
+.eremu-legenda .zlg:hover { color: var(--ink); border-color: var(--line-ui); }
+.eremu-legenda .zlg[aria-pressed="true"] { border-color: var(--gold); color: var(--gold-2); background: var(--gold-bg); }
+.eremu-legenda .sw { flex: none; width: 16px; height: 12px; background-color: var(--k); border: 1px solid var(--line-ui); }
+.eremu-legenda .zlg[aria-pressed="false"] .sw[data-z="0"] { background-image: repeating-linear-gradient(-45deg, var(--zeharra) 0 1.3px, transparent 1.3px 4px); }
+.eremu-legenda .zlg[aria-pressed="false"] .sw[data-z="1"] { background-image: repeating-linear-gradient(45deg, var(--zeharra) 0 1.3px, transparent 1.3px 4px); }
+.eremu-legenda .zlg[aria-pressed="false"] .sw[data-z="2"] { background-image: repeating-linear-gradient(90deg, var(--zeharra) 0 1.3px, transparent 1.3px 4px); }
+.eremu-legenda .zlg[aria-pressed="false"] .sw[data-z="3"] { background-image: repeating-linear-gradient(0deg, var(--zeharra) 0 1.3px, transparent 1.3px 4px); }
