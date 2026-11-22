@@ -29,7 +29,7 @@ const PALETAK = {
     change: { same: "#4A5C6A", flip: "#F2B544", "new": "#4A7BAA" },
     zona: { Hegoalde: "#6FA39A", Iparralde: "#A98BC4", "Euskal Herria": "#F2B544", Azkenak: "#F2B544" },
     fondoa: "#0C131A", muga: "#0A1016", mugaEsk: "#D6E1E8", mugaLur: "#F2B544",
-    nabarmen: "#F6C866", halo: "#0A1016", marra: "rgba(214,225,232,.55)",
+    nabarmen: "#F6C866", halo: "#0A1016", zeharra: "rgba(10,16,22,.5)", marra: "rgba(214,225,232,.55)",
   },
   argi: {
     margin: [[2, "#6B1414"], [5, "#9E3620"], [10, "#CE6B33"], [20, "#E2A86B"], [Infinity, "#EFD3AC"]],
@@ -39,7 +39,7 @@ const PALETAK = {
     change: { same: "#93A5B2", flip: "#A97608", "new": "#36689B" },
     zona: { Hegoalde: "#3F7A70", Iparralde: "#7A5B9B", "Euskal Herria": "#8A5F05", Azkenak: "#8A5F05" },
     fondoa: "#E8EDF1", muga: "#55707F", mugaEsk: "#37506A", mugaLur: "#A97608",
-    nabarmen: "#7A5200", halo: "#FFFFFF", marra: "rgba(30,50,66,.55)",
+    nabarmen: "#7A5200", halo: "#FFFFFF", zeharra: "rgba(255,255,255,.65)", marra: "rgba(30,50,66,.55)",
   },
 };
 let MAPA_K = PALETAK.ilun;
@@ -551,7 +551,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "6fc4ac30079c";
+const VERSION = "0447f4e7ae1e";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -1084,6 +1084,12 @@ function garbitu(key) {
     const z = f.properties.c === NODATA ? hutsunea(key, f.id) : null;  // solo los vacíos: ahorra calcular dos veces
     if (z) f.properties.z = z; else delete f.properties.z;
   }
+  // zona de toda Euskal Herria elegida: las demás, rayadas, cada una en una dirección (la elegida, limpia)
+  if (ehZonak) {
+    const hau = String(state.hautatua || ""), besteak = [...new Set(feats.map(f => String(f.id)))].filter(i => i !== hau).sort();
+    const zehar = feats.some(f => String(f.id) === hau) ? new Map(besteak.map((i, n) => [i, `zeharra-${n % ZEHARRAK.length}`])) : new Map();
+    for (const f of feats) { const m = !f.properties.z && zehar.get(String(f.id)); if (m) f.properties.mz = m; else delete f.properties.mz; }
+  }
   // una elección concreta: solo se dibuja el territorio que vota en ella (lo de fuera ni se raya)
   const ikusgai = bakarrikDa() ? feats.filter(f => f.properties.z !== "kanpoan") : feats;
   map.getSource(key).setData({ type: "FeatureCollection", features: ikusgai });
@@ -1140,17 +1146,21 @@ for (const k in GEO) capas.push(
   { id: k + "-fill", type: "fill", source: k, layout: { visibility: "none" },
     paint: { "fill-color": ["coalesce", ["get", "c"], NODATA],
              "fill-opacity": betegarria() } },
+  // zonas de toda Euskal Herria: con una elegida, las demás rayadas, cada una en una dirección («mz»), para distinguirlas
+  // aunque gane en ellas el mismo
+  { id: k + "-zeharra", type: "fill", source: k, layout: { visibility: "none" }, filter: ["has", "mz"],
+    paint: { "fill-pattern": ["get", "mz"] } },
   // daturik gabeko eremuak, marradunak (zergatia argibidean)
   { id: k + "-hutsa", type: "fill", source: k, layout: { visibility: "none" }, filter: ["has", "z"],
     paint: { "fill-pattern": "marra", "fill-opacity": .9 } },
   // el borde del elegido, con un halo oscuro (claro en la paleta clara) debajo: se distingue sobre cualquier fondo, también
   // sobre los naranjas de «Lehian dauden eremuak» y el satélite del sur
   { id: k + "-halo", type: "line", source: k, layout: { visibility: "none" },
-    paint: { "line-color": MAPA_K.halo, "line-width": ["case", ["boolean", ["feature-state", "sel"], false], 6.5, 0], "line-blur": .6 } },
+    paint: { "line-color": MAPA_K.halo, "line-width": ["case", ["boolean", ["feature-state", "sel"], false], 4.9, 0], "line-blur": .5 } },
   { id: k + "-line", type: "line", source: k, layout: { visibility: "none" },
     paint: { "line-color": ["case", ["boolean", ["feature-state", "sel"], false], MAPA_K.nabarmen,
                             ["boolean", ["feature-state", "hover"], false], MAPA_K.nabarmen, MAPA_K.muga],
-             "line-width": ["case", ["boolean", ["feature-state", "sel"], false], 3,
+             "line-width": ["case", ["boolean", ["feature-state", "sel"], false], 2.25,
                             ["boolean", ["feature-state", "hover"], false], 2.2, .7] } });
 // Enclaves (Trebiñu, Argantzun y Villaverde Turtzioz): solo en las municipales y las europeas, y solo en el total de
 // Euskal Herria (scripts/konfig.py, ENKLABEAK). No están en el polígono de Euskal Herria ni en ningún nivel agregado:
@@ -1182,8 +1192,18 @@ let estiloaPrest = false; map.once("style.load", () => { estiloaPrest = true; })
 const MUGIKORRA = matchMedia("(max-width: 900px)");  // móvil y tableta
 if (MUGIKORRA.matches && !(POS_URL.length === 3 && POS_URL.every(Number.isFinite)))
   map.fitBounds(MAPA.ehMugak, { padding: { top: 130, bottom: 250, left: 6, right: 6 }, animate: false });
-// trama de rayas para los eremuak sin datos (se crea cuando el estilo la pide)
+// trama de rayas para los eremuak sin datos (se crea cuando el estilo la pide); y las de las zonas no elegidas
+// («zeharra-0…3»: / \ | —), más finas y en el color que destaca sobre los de los partidos
+const ZEHARRAK = [[[0, 1, 1, 0], [-0.5, 0.5, 0.5, -0.5], [0.5, 1.5, 1.5, 0.5]], [[0, 0, 1, 1], [-0.5, 0.5, 0.5, 1.5], [0.5, -0.5, 1.5, 0.5]],
+                  [[0.5, 0, 0.5, 1]], [[0, 0.5, 1, 0.5]]];
 map.on("styleimagemissing", (e) => {
+  const zm = /^zeharra-(\d)$/.exec(e.id);
+  if (zm && !map.hasImage(e.id)) {
+    const n = 10, cv = document.createElement("canvas"); cv.width = cv.height = n;
+    const c = cv.getContext("2d"); c.strokeStyle = MAPA_K.zeharra; c.lineWidth = 1.3; c.beginPath();
+    for (const [x0, y0, x1, y1] of ZEHARRAK[+zm[1]]) { c.moveTo(x0 * n, y0 * n); c.lineTo(x1 * n, y1 * n); }
+    c.stroke(); map.addImage(e.id, c.getImageData(0, 0, n, n)); return;
+  }
   if (e.id !== "marra" || map.hasImage("marra")) return;
   const n = 8, cv = document.createElement("canvas"); cv.width = cv.height = n;
   const c = cv.getContext("2d"); c.strokeStyle = MAPA_K.marra; c.lineWidth = 1.4;
@@ -1256,7 +1276,7 @@ function ezarriMaila() {
   enklabeakEzarri();
   for (const k in GEO) {
     const vis = state.maila === "auto" ? autoMailak().some(a => a[0] === k) : k === state.maila;
-    for (const suf of ["-fill", "-hutsa", "-halo", "-line"]) {
+    for (const suf of ["-fill", "-zeharra", "-hutsa", "-halo", "-line"]) {
       map.setLayoutProperty(k + suf, "visibility", vis ? "visible" : "none");
       if (vis) {
         const a = state.maila === "auto" ? autoMailak().find(x => x[0] === k) : null;
@@ -1339,6 +1359,8 @@ function hautatu(id, src, gero = false) {
   markatu(sel, "sel", false); sel = null; state.hautatua = id;
   if (id) { sel = { source: src || mailaAktiboa(), id }; markatu(sel, "sel", true); }
   enklabeakNabarmendu();
+  const l = mailaAktiboa();  // zonas de toda Euskal Herria: las rayas de las no elegidas
+  if (GEO[l] && GEO[l].features.some(f => f.properties.e)) { sucio.add(l); garbitu(l); }
   if (gero) arnasa().then(() => { if (state.hautatua === id) margotu(); }); else margotu();
 }
 map.on("moveend", () => urlaIdatzi());
@@ -1942,6 +1964,7 @@ function mapaKoloreakSoilik() {
                ["boolean", ["feature-state", "hover"], false], MAPA_K.nabarmen, MAPA_K.muga]);
   }
   if (map.hasImage("marra")) map.removeImage("marra");  // se vuelve a crear con el color nuevo
+  for (let i = 0; i < ZEHARRAK.length; i++) if (map.hasImage(`zeharra-${i}`)) map.removeImage(`zeharra-${i}`);
 }
 function temaIdatzi(t) {
   try { localStorage.setItem("tema", t); } catch (e) { /* modo privado: solo esta sesión */ }
