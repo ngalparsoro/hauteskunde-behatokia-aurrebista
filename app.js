@@ -29,7 +29,7 @@ const PALETAK = {
     change: { same: "#4A5C6A", flip: "#F2B544", "new": "#4A7BAA" },
     zona: { Hegoalde: "#6FA39A", Iparralde: "#A98BC4", "Euskal Herria": "#F2B544", Azkenak: "#F2B544" },
     fondoa: "#0C131A", muga: "#0A1016", mugaEsk: "#D6E1E8", mugaLur: "#F2B544",
-    nabarmen: "#F6C866", halo: "#0A1016", pisuaOina: "#3A4A56", zeharra: "rgba(10,16,22,.5)", marra: "rgba(214,225,232,.55)",
+    nabarmen: "#F6C866", halo: "#0A1016", zeharra: "rgba(10,16,22,.5)", marra: "rgba(214,225,232,.55)",
   },
   argi: {
     margin: [[2, "#6B1414"], [5, "#9E3620"], [10, "#CE6B33"], [20, "#E2A86B"], [Infinity, "#EFD3AC"]],
@@ -39,7 +39,7 @@ const PALETAK = {
     change: { same: "#93A5B2", flip: "#A97608", "new": "#36689B" },
     zona: { Hegoalde: "#3F7A70", Iparralde: "#7A5B9B", "Euskal Herria": "#8A5F05", Azkenak: "#8A5F05" },
     fondoa: "#E8EDF1", muga: "#55707F", mugaEsk: "#37506A", mugaLur: "#A97608",
-    nabarmen: "#7A5200", halo: "#FFFFFF", pisuaOina: "#D3DCE3", zeharra: "rgba(255,255,255,.65)", marra: "rgba(30,50,66,.55)",
+    nabarmen: "#7A5200", halo: "#FFFFFF", zeharra: "rgba(255,255,255,.65)", marra: "rgba(30,50,66,.55)",
   },
 };
 let MAPA_K = PALETAK.ilun;
@@ -67,9 +67,10 @@ const CX = 250, CY = 250, R_HUB = 46, R_K0 = 50, R_K1 = 118, R_I0 = 124, R_I1 = 
 const SVGNS = "http://www.w3.org/2000/svg";
 // Sala de situación: aviso al cambiar de nivel con el zoom, teclas de modo y minimapa
 // «Bozken pisua»: en cada sección censal (en Iparralde, cada commune), un círculo por fuerza con área proporcional a sus
-// votos, a escala del terreno (radio en metros = BOLA_M × √votos: 400 votos, 160 m), así que crece con el zoom y se compara
+// votos, a escala del terreno (radio en metros = BOLA_M × √votos: 400 votos, 80 m), así que crece con el zoom y se compara
 // igual en todo el mapa; los muy pequeños, como mínimo BOLA_MIN px. Las BOLA_INDARRAK primeras fuerzas de cada sección.
-const BOLA_M = 8, BOLA_MIN = 1.5, BOLA_INDARRAK = 5;
+// Con 4 m los de las ciudades caben sin pisarse moviéndose poco (en Bilbo, la mitad menos de 400 m; con 8 m, casi 3 km).
+const BOLA_M = 4, BOLA_MIN = 1.5, BOLA_INDARRAK = 5;
 const TEKLA_MODUAK = { w: "winner", m: "margin", t: "turnout", c: "compare", u: "udalforal", b: "pisua" };
 // Argibidea (puntero): solo los partidos o bloques a esta distancia (puntos) del primero, los que optan a gobernar
 const LEHIA_MARJINA = 10;
@@ -563,7 +564,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "ff8c6e1a556f";
+const VERSION = "64cd3b63a9b0";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -1042,7 +1043,7 @@ function color(level, id) {
   if (state.modua === "winner") return r ? FAM[r.gf] || FAM.LOCAL : NODATA;
   if (state.modua === "margin") return r ? (r.m == null ? UNCONTESTED : bin(r.m, MARGIN_BINS)) : NODATA;
   if (state.modua === "turnout") return r ? bin(r.pE ?? r.part, TURNOUT_BINS) : NODATA;  // la de los residentes, sin el CERA
-  if (state.modua === "pisua") return r ? MAPA_K.pisuaOina : NODATA;  // el color va en los círculos de las fuerzas (bolakEguneratu)
+  if (state.modua === "pisua") return r ? "rgba(0,0,0,0)" : NODATA;  // mapa negro: el color va en los círculos (bolakEguneratu)
   // konparatu: irabazlea aldatu den ala ez, aukeratutako bi hauteskundeen artean
   const oy = state.konparatu;
   if (!oy) return NODATA;
@@ -1206,7 +1207,7 @@ capas.push(
 const BOLA_PX0 = 114500;
 sources.bolak = { type: "geojson", data: { type: "FeatureCollection", features: [] } };
 capas.push({ id: "bolak", type: "circle", source: "bolak", layout: { visibility: "none", "circle-sort-key": ["-", 0, ["get", "rm"]] },
-  paint: { "circle-color": ["get", "c"], "circle-opacity": .78, "circle-stroke-color": MAPA_K.halo, "circle-stroke-width": .7,
+  paint: { "circle-color": ["get", "c"], "circle-opacity": 1, "circle-stroke-color": MAPA_K.nabarmen, "circle-stroke-width": 0,
            "circle-radius": ["interpolate", ["exponential", 2], ["zoom"],
              ...[4, 6, 8, 10, 12, 14, 16, 18].flatMap((z) => [z, ["max", BOLA_MIN, ["/", ["*", ["get", "rm"], 2 ** z], BOLA_PX0]]])] } });
 const map = new maplibregl.Map({
@@ -1307,6 +1308,27 @@ function mugakIragazi(enklabeakIkusi) {
 }
 // Capas, filtros y feature-state solo con el estilo cargado: antes MapLibre lanza «Style is not done loading»
 // (móvil lento, pestaña en segundo plano, datos ya en caché). arrancar() (10-abiarazi.js) lo aplica todo al cargar.
+// «Bozken pisua»: sin satélite, fondo negro y las divisiones en líneas blancas finas (el color, solo en los círculos); fuera
+// del modo, lo de la paleta
+const MUGA_ZABALERAK = {};
+function pisuaGeruzak() {
+  const piz = state.modua === "pisua", zuria = "#FFFFFF", sel = ["boolean", ["feature-state", "sel"], false], hov = ["boolean", ["feature-state", "hover"], false];
+  map.setPaintProperty("fondo", "background-color", piz ? "#000000" : MAPA_K.fondoa);
+  for (const l of ["sat", "orto"]) map.setLayoutProperty(l, "visibility", state.satelitea && !piz ? "visible" : "none");
+  for (const [l, kol, op] of [["muga-udal", MAPA_K.muga, .8], ["muga-esk", MAPA_K.mugaEsk, .55], ["muga-lur", MAPA_K.mugaLur, .85]]) {
+    if (!(l in MUGA_ZABALERAK)) MUGA_ZABALERAK[l] = map.getPaintProperty(l, "line-width");  // la de siempre, para volver a ella
+    map.setPaintProperty(l, "line-color", piz ? zuria : kol);
+    map.setPaintProperty(l, "line-opacity", piz ? { "muga-udal": .35, "muga-esk": .5, "muga-lur": .75 }[l] : op);
+    map.setPaintProperty(l, "line-width", piz ? { "muga-udal": .4, "muga-esk": .6, "muga-lur": .9 }[l] : MUGA_ZABALERAK[l]);
+  }
+  for (const k in GEO) {
+    map.setPaintProperty(k + "-line", "line-color", ["case", sel, MAPA_K.nabarmen, hov, MAPA_K.nabarmen, piz ? zuria : MAPA_K.muga]);
+    map.setPaintProperty(k + "-line", "line-width", ["case", sel, piz ? 1.4 : 2.25, hov, piz ? 1 : 2.2, piz ? .35 : .7]);
+    map.setPaintProperty(k + "-line", "line-opacity", piz ? .6 : 1);
+    map.setLayoutProperty(k + "-halo", "visibility", piz ? "none" : map.getLayoutProperty(k + "-line", "visibility") || "none");
+  }
+  ortoKreditua();
+}
 function ezarriMaila() {
   if (!estiloaPrest) return;
   enklabeakEzarri();
@@ -1321,6 +1343,7 @@ function ezarriMaila() {
     }
     if (vis) garbitu(k);
   }
+  pisuaGeruzak();
 }
 
 // «Bozken pisua»: en cada sección (y commune de Iparralde) un círculo por fuerza, con el color de su familia (o bloque, donde
@@ -1332,14 +1355,39 @@ function bolakPilatu(rr) {  // radios (m), de mayor a menor → centros [x, y, r
   for (const r of rr) {
     let onena = out.length ? null : [0, 0, r, 0];
     for (const [x0, y0, r0] of out) for (let a = 0; a < 24; a++) {
-      const t = a / 12 * Math.PI, x = x0 + (r0 + r) * Math.cos(t), y = y0 + (r0 + r) * Math.sin(t);
-      if (out.some(([x1, y1, r1]) => Math.hypot(x - x1, y - y1) < r + r1 - 0.01)) continue;
+      const t = a / 12 * Math.PI, x = x0 + (r0 + r + 2) * Math.cos(t), y = y0 + (r0 + r + 2) * Math.sin(t);  // 2 m entre ellos
+      if (out.some(([x1, y1, r1]) => Math.hypot(x - x1, y - y1) < r + r1 + 1.99)) continue;
       const d = Math.hypot(x, y); if (!onena || d < onena[3]) onena = [x, y, r, d];
     }
     out.push(onena ? onena.slice(0, 3) : [0, 0, r]);
   }
   const [cx, cy] = [0, 1].map((k) => out.reduce((a, c) => a + c[k] * c[2] ** 2, 0) / out.reduce((a, c) => a + c[2] ** 2, 0));
   return out.map(([x, y, r]) => [x - cx, y - cy, r]);  // centrados en su centro de masas
+}
+// Los círculos de secciones vecinas (en las ciudades) se pisarían: cada sección, con sus círculos juntos (el círculo que los
+// envuelve), va al sitio libre más cercano a su centro, de la más grande a la más pequeña, buscando en espiral. En metros
+// (vale para todos los zooms) y con una rejilla de celdas para no mirar todas las parejas: nunca se pisan dos secciones.
+const BOLA_TARTEA = 4, BOLA_GELAXKA = 200;  // m entre secciones; m de celda
+function bolakBanandu(xs, ys, rs) {
+  const n = rs.length, sarea = new Map(), g = (v) => Math.floor(v / BOLA_GELAXKA);
+  const libre = (x, y, r) => {
+    for (let gx = g(x - r - BOLA_TARTEA); gx <= g(x + r + BOLA_TARTEA); gx++)
+      for (let gy = g(y - r - BOLA_TARTEA); gy <= g(y + r + BOLA_TARTEA); gy++)
+        for (const j of sarea.get(gx * 1e6 + gy) || []) if (Math.hypot(x - xs[j], y - ys[j]) < r + rs[j] + BOLA_TARTEA) return false;
+    return true;
+  };
+  for (const i of [...Array(n).keys()].sort((a, b) => rs[b] - rs[a])) {
+    const x0 = xs[i], y0 = ys[i], urratsa = Math.max(10, rs[i] / 2);
+    bilatu: for (let eraztuna = 0; eraztuna < 2000; eraztuna++) {
+      const d = eraztuna * urratsa, zenbat = eraztuna ? Math.ceil(2 * Math.PI * d / urratsa) : 1, hasi = (i * 2.399) % (2 * Math.PI);
+      for (let a = 0; a < zenbat; a++) {
+        const t = hasi + a * 2 * Math.PI / zenbat, x = x0 + d * Math.cos(t), y = y0 + d * Math.sin(t);
+        if (libre(x, y, rs[i])) { xs[i] = x; ys[i] = y; break bilatu; }
+      }
+    }
+    for (let gx = g(xs[i] - rs[i]); gx <= g(xs[i] + rs[i]); gx++)
+      for (let gy = g(ys[i] - rs[i]); gy <= g(ys[i] + rs[i]); gy++) { const k = gx * 1e6 + gy, l = sarea.get(k); if (l) l.push(i); else sarea.set(k, [i]); }
+  }
 }
 function bolakEguneratu() {
   if (!estiloaPrest || !map.getLayer("bolak")) return;
@@ -1349,23 +1397,26 @@ function bolakEguneratu() {
   const gakoa = [state.mapa, state.hauteskundea, ...osagK(), state.denboraT, state.bakarrik, sekUrtea, GEO.sec.features.length, MAPA_K.halo].join("|");
   if (gakoa !== bolaGakoa) {
     bolaGakoa = gakoa;
-    const feats = [];
+    // en metros sobre una proyección sencilla (a 43° N), para separar y volver a grados
+    const KY = 111320, KX = KY * Math.cos(43 * Math.PI / 180), taldeak = [];
     for (const f of GEO.sec.features) {
       const id = String(f.id), bb = f.properties.bb, r = bb && erregistroa("sec", id);
       if (!r || !r.c || !r.c.length) continue;
       const indarrak = r.c.slice(0, BOLA_INDARRAK).filter((c) => c[2] > 0).sort((a, b) => b[2] - a[2]);
-      const lon0 = (bb[0] + bb[2]) / 2, lat0 = (bb[1] + bb[3]) / 2, kos = Math.cos(lat0 * Math.PI / 180);
-      bolakPilatu(indarrak.map((c) => BOLA_M * Math.sqrt(c[2]))).forEach(([x, y, rm], n) => {
-        const c = indarrak[n];
-        feats.push({ type: "Feature", properties: { fid: id, rm, v: c[2], c: FAM[c[1]] || FAM.LOCAL },
-                     geometry: { type: "Point", coordinates: [lon0 + x / (111320 * kos), lat0 + y / 111320] } });
-      });
+      if (!indarrak.length) continue;
+      const bolak = bolakPilatu(indarrak.map((c) => BOLA_M * Math.sqrt(c[2])));
+      taldeak.push({ id, x: (bb[0] + bb[2]) / 2 * KX, y: (bb[1] + bb[3]) / 2 * KY, R: Math.max(...bolak.map(([x, y, rm]) => Math.hypot(x, y) + rm)),
+                     bolak: bolak.map(([x, y, rm], n) => [x, y, rm, indarrak[n]]) });
     }
+    const xs = Float64Array.from(taldeak, (t) => t.x), ys = Float64Array.from(taldeak, (t) => t.y);
+    bolakBanandu(xs, ys, Float64Array.from(taldeak, (t) => t.R));
+    const feats = taldeak.flatMap((t, i) => t.bolak.map(([x, y, rm, c]) => ({ type: "Feature",
+      properties: { fid: t.id, rm, v: c[2], c: FAM[c[1]] || FAM.LOCAL }, geometry: { type: "Point", coordinates: [(xs[i] + x) / KX, (ys[i] + y) / KY] } })));
     BOLA_MAX = Math.max(0, ...feats.map((f) => f.properties.v));
     map.getSource("bolak").setData({ type: "FeatureCollection", features: feats });
   }
-  map.setPaintProperty("bolak", "circle-stroke-width", ["case", ["==", ["get", "fid"], state.hautatua || ""], 1.8, .5]);
-  map.setPaintProperty("bolak", "circle-stroke-color", ["case", ["==", ["get", "fid"], state.hautatua || ""], MAPA_K.nabarmen, MAPA_K.halo]);
+  map.setPaintProperty("bolak", "circle-stroke-width", ["case", ["==", ["get", "fid"], state.hautatua || ""], 1.6, 0]);
+  map.setPaintProperty("bolak", "circle-stroke-color", MAPA_K.nabarmen);
 }
 // radio en píxeles de un círculo de v votos con el zoom de ahora (leyenda del panel)
 const bolaPx = (v) => Math.max(BOLA_MIN, BOLA_M * Math.sqrt(v) * 2 ** map.getZoom() / BOLA_PX0);
@@ -2023,11 +2074,11 @@ map.on("zoomend", async () => {
   garbitu(mailaAktiboa()); margotu();
 });
 // Crédito de las ortofotos a pie de mapa (lo piden sus licencias): solo cuando se ven
-function ortoKreditua() { $("#ortokreditua").hidden = !(state.satelitea && map.getZoom() >= IRUDIAK.ortoMinZoom); }
+function ortoKreditua() { $("#ortokreditua").hidden = !(state.satelitea && state.modua !== "pisua" && map.getZoom() >= IRUDIAK.ortoMinZoom); }
 map.on("zoom", ortoKreditua);
 ortoKreditua();
 function sateliteaEzarri() {
-  for (const l of ["sat", "orto"]) map.setLayoutProperty(l, "visibility", state.satelitea ? "visible" : "none");
+  for (const l of ["sat", "orto"]) map.setLayoutProperty(l, "visibility", state.satelitea && state.modua !== "pisua" ? "visible" : "none");  // «Bozken pisua»: sin satélite
   ortoKreditua();
   for (const k in GEO) map.setPaintProperty(k + "-fill", "fill-opacity", betegarria());
   enklabeakNabarmendu();
