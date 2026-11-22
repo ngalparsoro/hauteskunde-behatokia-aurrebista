@@ -66,10 +66,10 @@ const LETRA = { generales: "O", legislativas: "L", presidenciales: "P", regional
 const CX = 250, CY = 250, R_HUB = 46, R_K0 = 50, R_K1 = 118, R_I0 = 124, R_I1 = 236;
 const SVGNS = "http://www.w3.org/2000/svg";
 // Sala de situación: aviso al cambiar de nivel con el zoom, teclas de modo y minimapa
-// «Bozken pisua»: el círculo de cada zona tiene un área proporcional a sus votos a candidaturas, a escala del terreno (radio en
-// metros = BOLA_M × √votos: Bilbo, unos 11 km; Euskal Herria entera, unos 32 km), así que se compara igual en todos los niveles;
-// los muy pequeños, como mínimo BOLA_MIN px
-const BOLA_M = 25, BOLA_MIN = 2;
+// «Bozken pisua»: en cada sección censal (en Iparralde, cada commune), un círculo por fuerza con área proporcional a sus
+// votos, a escala del terreno (radio en metros = BOLA_M × √votos: 400 votos, 160 m), así que crece con el zoom y se compara
+// igual en todo el mapa; los muy pequeños, como mínimo BOLA_MIN px. Las BOLA_INDARRAK primeras fuerzas de cada sección.
+const BOLA_M = 8, BOLA_MIN = 1.5, BOLA_INDARRAK = 5;
 const TEKLA_MODUAK = { w: "winner", m: "margin", t: "turnout", c: "compare", u: "udalforal", b: "pisua" };
 // Argibidea (puntero): solo los partidos o bloques a esta distancia (puntos) del primero, los que optan a gobernar
 const LEHIA_MARJINA = 10;
@@ -127,8 +127,8 @@ const TESTUAK = {
     lasterbideak: "Lasterbideak", itxi: "Itxi", kargatzen: "Kargatzen…", errorea: "Errorea",
     lagMota: "Mapa mota: Udalak, Autonomikoak, Foralak, Estatua, Europa", lagQE: "Aurreko / hurrengo hauteskundea",
     lagWMT: "Irabazlea, lehian dauden eremuak, parte-hartzea", lagCU: "Konparatu bi urte, udal / foru aldea",
-    pisua: "Bozken pisua", lagB: "Bozken pisua: boto kopurua borobiletan", pisuaLegenda: "Hautagaitzen botoak (borobilaren azalera)",
-    pisuaAzalpena: "Borobil bakoitza eremuaren erdian dago: bere azalera boto kopuruaren proportzionala da (eskala bera maila guztietan) eta kolorea irabazlearena. Hurbildu ahala, borobilak hazi egiten dira.", lagItxura: "Itxura argia / iluna", lagS: "Satelite-mapa erakutsi / ezkutatu",
+    pisua: "Bozken pisua", lagB: "Bozken pisua: boto kopurua borobiletan", pisuaLegenda: "Indar baten botoak (borobilaren azalera)",
+    pisuaAzalpena: "Sekzio zentsal bakoitzean (Iparraldean, udalerri bakoitzean) bost indar nagusiek borobil bana dute, bere botoen proportzioan eta alderdiaren edo blokearen kolorearekin. Modu honetan maila sekzioetan finkatuta dago. Hurbildu ahala, borobilak hazi egiten dira.", lagItxura: "Itxura argia / iluna", lagS: "Satelite-mapa erakutsi / ezkutatu",
     lagL: "Ezkerreko menua erakutsi / ezkutatu", lagK: "Emaitzak ↔ eserlekuak (panelean)", lagP: "Denbora-lerroa erreproduzitu / gelditu",
     lagBilatu: "Udalerri bat bilatu", lag0: "Euskal Herria osoa ikusi", lagEsc: "Hautapena eta leihoak itxi",
     // panel
@@ -237,8 +237,8 @@ const TESTUAK = {
     lasterbideak: "Atajos", itxi: "Cerrar", kargatzen: "Cargando…", errorea: "Error",
     lagMota: "Tipo de mapa: municipales, autonómicas, forales, estatales, europeas", lagQE: "Elección anterior / siguiente",
     lagWMT: "Ganador, zonas reñidas, participación", lagCU: "Comparar dos años, diferencia municipales / forales",
-    pisua: "Peso del voto", lagB: "Peso del voto: los votos en círculos", pisuaLegenda: "Votos a candidaturas (área del círculo)",
-    pisuaAzalpena: "Cada círculo está en el centro de su zona: su área es proporcional al número de votos (la misma escala en todos los niveles) y su color, el de quien gana. Al acercarse, los círculos crecen.", lagItxura: "Aspecto claro / oscuro", lagS: "Mostrar / ocultar el satélite",
+    pisua: "Peso del voto", lagB: "Peso del voto: los votos en círculos", pisuaLegenda: "Votos de una fuerza (área del círculo)",
+    pisuaAzalpena: "En cada sección censal (en Iparralde, en cada municipio) las cinco primeras fuerzas tienen un círculo cada una, en proporción a sus votos y con el color de su partido o bloque. En este modo el nivel queda fijo en las secciones. Al acercarse, los círculos crecen.", lagItxura: "Aspecto claro / oscuro", lagS: "Mostrar / ocultar el satélite",
     lagL: "Mostrar / ocultar el menú de la izquierda", lagK: "Resultados ↔ escaños (en el panel)", lagP: "Reproducir / parar la línea de tiempo",
     lagBilatu: "Buscar un municipio", lag0: "Ver Euskal Herria entera", lagEsc: "Cerrar la selección y las ventanas",
     udalerri: "municipios", biztLabur: "hab.", biztanle: "habitantes", zinegotzi: "concejales", eserleku: "escaños", sekzioa: "sección",
@@ -343,8 +343,8 @@ const TESTUAK = {
     lasterbideak: "Raccourcis", itxi: "Fermer", kargatzen: "Chargement…", errorea: "Erreur",
     lagMota: "Type de carte : municipales, autonomiques, forales, nationales, européennes", lagQE: "Élection précédente / suivante",
     lagWMT: "Vainqueur, zones serrées, participation", lagCU: "Comparer deux années, écart municipales / forales",
-    pisua: "Poids des voix", lagB: "Poids des voix : les voix en cercles", pisuaLegenda: "Voix exprimées pour les listes (aire du cercle)",
-    pisuaAzalpena: "Chaque cercle est au centre de sa zone : son aire est proportionnelle au nombre de voix (même échelle à tous les niveaux) et sa couleur est celle du vainqueur. En zoomant, les cercles grandissent.", lagItxura: "Apparence claire / sombre", lagS: "Afficher / masquer le satellite",
+    pisua: "Poids des voix", lagB: "Poids des voix : les voix en cercles", pisuaLegenda: "Voix d'une force (aire du cercle)",
+    pisuaAzalpena: "Dans chaque section électorale (en Iparralde, dans chaque commune), les cinq premières forces ont chacune un cercle, proportionnel à leurs voix et de la couleur de leur parti ou bloc. Dans ce mode, l'échelle reste fixée aux sections. En zoomant, les cercles grandissent.", lagItxura: "Apparence claire / sombre", lagS: "Afficher / masquer le satellite",
     lagL: "Afficher / masquer le menu de gauche", lagK: "Résultats ↔ sièges (dans le panneau)", lagP: "Lire / arrêter la frise chronologique",
     lagBilatu: "Rechercher une commune", lag0: "Voir tout Euskal Herria", lagEsc: "Fermer la sélection et les fenêtres",
     udalerri: "communes", biztLabur: "hab.", biztanle: "habitants", zinegotzi: "conseillers", eserleku: "sièges", sekzioa: "section",
@@ -449,8 +449,8 @@ const TESTUAK = {
     lasterbideak: "Shortcuts", itxi: "Close", kargatzen: "Loading…", errorea: "Error",
     lagMota: "Map type: local, regional, foral (provincial assemblies), state, European", lagQE: "Previous / next election",
     lagWMT: "Winner, close races, turnout", lagCU: "Compare two years, local / provincial gap",
-    pisua: "Vote weight", lagB: "Vote weight: votes as circles", pisuaLegenda: "Votes for candidates (circle area)",
-    pisuaAzalpena: "Each circle sits at the centre of its area: its area is proportional to the number of votes (same scale at every level) and its colour is the winner's. Circles grow as you zoom in.", lagItxura: "Light / dark appearance", lagS: "Show / hide satellite",
+    pisua: "Vote weight", lagB: "Vote weight: votes as circles", pisuaLegenda: "Votes for one party (circle area)",
+    pisuaAzalpena: "In each census section (in Iparralde, each municipality) the top five parties each have a circle, in proportion to their votes and in the colour of their party or bloc. In this mode the level stays fixed at census sections. Circles grow as you zoom in.", lagItxura: "Light / dark appearance", lagS: "Show / hide satellite",
     lagL: "Show / hide the left menu", lagK: "Results ↔ seats (in the panel)", lagP: "Play / stop the timeline",
     lagBilatu: "Search a municipality", lag0: "Show all of Euskal Herria", lagEsc: "Close the selection and windows",
     udalerri: "municipalities", biztLabur: "inhab.", biztanle: "inhabitants", zinegotzi: "councillors", eserleku: "seats", sekzioa: "section",
@@ -563,7 +563,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "8fe2f0efcd1a";
+const VERSION = "ff8c6e1a556f";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -675,6 +675,7 @@ const POS_URL = (URL0.get("p") || "").split(",").map(Number);
 // se ven eligiéndolo, así que un enlace a una de ellas lo necesita
 const mailaUrlan = (l) => l === "muni" || l in INDEX.levels;
 if (mailaUrlan(URL0.get("e"))) state.maila = URL0.get("e");
+if (state.modua === "pisua") state.maila = "sec";  // «Bozken pisua»: siempre por secciones
 function urlaIdatzi() {
   const q = new URLSearchParams({ k: state.mapa, y: state.hauteskundea, m: state.modua });
   if (state.modua === "compare") q.set("c", state.konparatu);
@@ -1041,7 +1042,7 @@ function color(level, id) {
   if (state.modua === "winner") return r ? FAM[r.gf] || FAM.LOCAL : NODATA;
   if (state.modua === "margin") return r ? (r.m == null ? UNCONTESTED : bin(r.m, MARGIN_BINS)) : NODATA;
   if (state.modua === "turnout") return r ? bin(r.pE ?? r.part, TURNOUT_BINS) : NODATA;  // la de los residentes, sin el CERA
-  if (state.modua === "pisua") return r ? MAPA_K.pisuaOina : NODATA;  // el color va en los círculos (bolakEguneratu)
+  if (state.modua === "pisua") return r ? MAPA_K.pisuaOina : NODATA;  // el color va en los círculos de las fuerzas (bolakEguneratu)
   // konparatu: irabazlea aldatu den ala ez, aukeratutako bi hauteskundeen artean
   const oy = state.konparatu;
   if (!oy) return NODATA;
@@ -1199,9 +1200,9 @@ capas.push(
   { id: "muga-esk", type: "line", source: "muga-esk", minzoom: 9, paint: { "line-color": MAPA_K.mugaEsk, "line-width": ["interpolate", ["linear"], ["zoom"], 9, .9, 13, 1.6], "line-opacity": .55 } },
   { id: "muga-lur", type: "line", source: "muga-lur", minzoom: LUR_MUGA_ZOOM, paint: { "line-color": MAPA_K.mugaLur, "line-width": ["interpolate", ["linear"], ["zoom"], LUR_MUGA_ZOOM, 1.3, 13, 2.6], "line-opacity": .85 } });
 
-// «Bozken pisua»: un círculo por zona del nivel que se ve, con el color de quien gana; su radio, en metros (rm) pasado a
-// píxeles según el zoom (a la latitud de Euskal Herria, un píxel del nivel 0 son ~114,5 km), y nunca menor que BOLA_MIN.
-// Los grandes debajo de los pequeños.
+// «Bozken pisua»: los círculos de las fuerzas de cada sección (bolakEguneratu); su radio, en metros (rm) pasado a píxeles
+// según el zoom (a la latitud de Euskal Herria, un píxel del nivel 0 son ~114,5 km), y nunca menor que BOLA_MIN. Los grandes
+// debajo de los pequeños.
 const BOLA_PX0 = 114500;
 sources.bolak = { type: "geojson", data: { type: "FeatureCollection", features: [] } };
 capas.push({ id: "bolak", type: "circle", source: "bolak", layout: { visibility: "none", "circle-sort-key": ["-", 0, ["get", "rm"]] },
@@ -1322,30 +1323,48 @@ function ezarriMaila() {
   }
 }
 
-// los círculos de «Bozken pisua» del nivel que se ve: votos a candidaturas (vc; en municipios y secciones, de la primera
-// candidatura y su %) y el color de quien gana; el elegido, con el borde más grueso
-const bozkak = (r) => { if (r.vc != null) return r.vc; const c = (r.c || [])[0]; return c && c[3] ? c[2] * 100 / c[3] : null; };
-let BOLA_MAX = 0;
+// «Bozken pisua»: en cada sección (y commune de Iparralde) un círculo por fuerza, con el color de su familia (o bloque, donde
+// el panel va por bloques), apretados alrededor del centro de la sección sin pisarse (en metros: así no se mueven al hacer
+// zoom). Se recalculan solo cuando cambia lo que se ve; la sección elegida, con el borde en oro.
+let BOLA_MAX = 0, bolaGakoa = "";
+function bolakPilatu(rr) {  // radios (m), de mayor a menor → centros [x, y, r] (m) alrededor del primero, sin solaparse
+  const out = [];
+  for (const r of rr) {
+    let onena = out.length ? null : [0, 0, r, 0];
+    for (const [x0, y0, r0] of out) for (let a = 0; a < 24; a++) {
+      const t = a / 12 * Math.PI, x = x0 + (r0 + r) * Math.cos(t), y = y0 + (r0 + r) * Math.sin(t);
+      if (out.some(([x1, y1, r1]) => Math.hypot(x - x1, y - y1) < r + r1 - 0.01)) continue;
+      const d = Math.hypot(x, y); if (!onena || d < onena[3]) onena = [x, y, r, d];
+    }
+    out.push(onena ? onena.slice(0, 3) : [0, 0, r]);
+  }
+  const [cx, cy] = [0, 1].map((k) => out.reduce((a, c) => a + c[k] * c[2] ** 2, 0) / out.reduce((a, c) => a + c[2] ** 2, 0));
+  return out.map(([x, y, r]) => [x - cx, y - cy, r]);  // centrados en su centro de masas
+}
 function bolakEguneratu() {
   if (!estiloaPrest || !map.getLayer("bolak")) return;
-  const piz = state.modua === "pisua";
+  const piz = state.modua === "pisua" && mailaAktiboa() === "sec";
   map.setLayoutProperty("bolak", "visibility", piz ? "visible" : "none");
   if (!piz) return;
-  const l = mailaAktiboa(), feats = [], ikusiak = new Set();
-  const herriak = Object.fromEntries((IZENAK.herriak || []).map(([i, , lon, lat]) => [i, [lon, lat]]));
-  for (const f of (GEO[l] || { features: [] }).features) {
-    const id = String(f.id);
-    if (ikusiak.has(id) || (l === "eh" && id !== estaldura())) continue;
-    ikusiak.add(id);
-    const r = erregistroa(l, id), v = r && bozkak(r);
-    if (!v) continue;
-    const bb = f.properties.bb;
-    const p = l === "muni" ? herriak[id] : f.properties.px != null ? [f.properties.px, f.properties.py] : bb ? [(bb[0] + bb[2]) / 2, (bb[1] + bb[3]) / 2] : null;
-    if (p) feats.push({ type: "Feature", properties: { fid: id, rm: BOLA_M * Math.sqrt(v), v, c: FAM[r.gf] || FAM.LOCAL }, geometry: { type: "Point", coordinates: p } });
+  const gakoa = [state.mapa, state.hauteskundea, ...osagK(), state.denboraT, state.bakarrik, sekUrtea, GEO.sec.features.length, MAPA_K.halo].join("|");
+  if (gakoa !== bolaGakoa) {
+    bolaGakoa = gakoa;
+    const feats = [];
+    for (const f of GEO.sec.features) {
+      const id = String(f.id), bb = f.properties.bb, r = bb && erregistroa("sec", id);
+      if (!r || !r.c || !r.c.length) continue;
+      const indarrak = r.c.slice(0, BOLA_INDARRAK).filter((c) => c[2] > 0).sort((a, b) => b[2] - a[2]);
+      const lon0 = (bb[0] + bb[2]) / 2, lat0 = (bb[1] + bb[3]) / 2, kos = Math.cos(lat0 * Math.PI / 180);
+      bolakPilatu(indarrak.map((c) => BOLA_M * Math.sqrt(c[2]))).forEach(([x, y, rm], n) => {
+        const c = indarrak[n];
+        feats.push({ type: "Feature", properties: { fid: id, rm, v: c[2], c: FAM[c[1]] || FAM.LOCAL },
+                     geometry: { type: "Point", coordinates: [lon0 + x / (111320 * kos), lat0 + y / 111320] } });
+      });
+    }
+    BOLA_MAX = Math.max(0, ...feats.map((f) => f.properties.v));
+    map.getSource("bolak").setData({ type: "FeatureCollection", features: feats });
   }
-  BOLA_MAX = Math.max(0, ...feats.map((f) => f.properties.v));
-  map.getSource("bolak").setData({ type: "FeatureCollection", features: feats });
-  map.setPaintProperty("bolak", "circle-stroke-width", ["case", ["==", ["get", "fid"], state.hautatua || ""], 2.6, .7]);
+  map.setPaintProperty("bolak", "circle-stroke-width", ["case", ["==", ["get", "fid"], state.hautatua || ""], 1.8, .5]);
   map.setPaintProperty("bolak", "circle-stroke-color", ["case", ["==", ["get", "fid"], state.hautatua || ""], MAPA_K.nabarmen, MAPA_K.halo]);
 }
 // radio en píxeles de un círculo de v votos con el zoom de ahora (leyenda del panel)
@@ -1973,8 +1992,13 @@ document.addEventListener("keydown", (e) => { if (e.key === "Escape") cerrarAnil
 document.addEventListener("pointerdown", (e) => { if (anilloDe && !dialBox.contains(e.target)) cerrarAnillo(); });
 pintarDial();
 $("#ufsel").addEventListener("change", () => { state.ufAlderdia = $("#ufsel").value; zikindu(); ezarriMaila(); margotu(); });
+let pisuAurrekoMaila = "auto";  // el nivel de antes de «Bozken pisua» (que va siempre por secciones), para volver a él
 document.querySelectorAll(".mode[data-mode]").forEach(b => b.addEventListener("click", async () => {
+  const lehen = state.modua;
   state.modua = b.dataset.mode; document.querySelectorAll(".mode[data-mode]").forEach(x => x.setAttribute("aria-pressed", x === b));
+  if (state.modua === "pisua" && lehen !== "pisua") { pisuAurrekoMaila = state.maila === "sec" ? "auto" : state.maila; state.maila = "sec"; }
+  if (state.modua !== "pisua" && lehen === "pisua") { state.maila = pisuAurrekoMaila; if (state.maila !== "auto") await mailaKargatu(state.maila); }
+  levelSel.value = state.maila; levelSel.disabled = state.modua === "pisua";
   if (state.modua === "compare" && state.konparatu === state.hauteskundea) state.konparatu = aurrekoa(state.hauteskundea) || state.hauteskundea;
   await prestatu(); zikindu(); ezarriMaila(); hautatzaileakMargotu(); margotu();
 }));
@@ -1990,6 +2014,7 @@ const levelSel = $("#level");
   }
 }
 levelSel.value = state.maila;  // puede venir del enlace (e=)
+levelSel.disabled = state.modua === "pisua";  // «Bozken pisua»: siempre por secciones
 levelSel.addEventListener("change", async () => { state.maila = levelSel.value; if (state.maila === "sec") await sekzioakKargatu(); else await mailaKargatu(state.maila); hautatu(null); ezarriMaila(); margotu(); });
 map.on("zoomend", async () => {
   if (state.maila !== "auto") return;
