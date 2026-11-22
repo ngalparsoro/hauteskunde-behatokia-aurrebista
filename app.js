@@ -29,7 +29,7 @@ const PALETAK = {
     change: { same: "#4A5C6A", flip: "#F2B544", "new": "#4A7BAA" },
     zona: { Hegoalde: "#6FA39A", Iparralde: "#A98BC4", "Euskal Herria": "#F2B544", Azkenak: "#F2B544" },
     fondoa: "#0C131A", muga: "#0A1016", mugaEsk: "#D6E1E8", mugaLur: "#F2B544",
-    nabarmen: "#F6C866", marra: "rgba(214,225,232,.55)",
+    nabarmen: "#F6C866", halo: "#0A1016", marra: "rgba(214,225,232,.55)",
   },
   argi: {
     margin: [[2, "#6B1414"], [5, "#9E3620"], [10, "#CE6B33"], [20, "#E2A86B"], [Infinity, "#EFD3AC"]],
@@ -39,7 +39,7 @@ const PALETAK = {
     change: { same: "#93A5B2", flip: "#A97608", "new": "#36689B" },
     zona: { Hegoalde: "#3F7A70", Iparralde: "#7A5B9B", "Euskal Herria": "#8A5F05", Azkenak: "#8A5F05" },
     fondoa: "#E8EDF1", muga: "#55707F", mugaEsk: "#37506A", mugaLur: "#A97608",
-    nabarmen: "#7A5200", marra: "rgba(30,50,66,.55)",
+    nabarmen: "#7A5200", halo: "#FFFFFF", marra: "rgba(30,50,66,.55)",
   },
 };
 let MAPA_K = PALETAK.ilun;
@@ -140,6 +140,15 @@ const TESTUAK = {
     aggOharra: "Botoak familiaka batuta; tokiko zerrendak ez dira irabazle-kalkuluan sartzen.",
     aggOharraEH: "Botoak familiaka batuta; tokiko zerrendak, guztiak batera, lehenak badira, eremua grisez.",
     tarteAzalpena: { errenta_maila: "Kontsumo-unitateko errenta erabilgarriaren mediana, 2023", ikasketa_maila: "15 urtetik gorakoetan goi-mailako ikasketak dituztenak, 2023" },
+    deskribapena: "Deskribapena", desk: { "udalerriak": "Osatzen duten udalerriak", "oharra": "Sakatu udalerri bat bere emaitzak ikusteko." },
+    balioIzena: { "euskara_eremua": "% euskaldun", "udal_tamaina": "biztanle", "ikasketa_maila": "% goi-ikasketak", "errenta_maila": "errenta (mediana)" },
+    mailaDesk: { euskara_eremua: "Udalerri bakoitzeko euskaldunen ehunekoa (euskara ondo edo nahiko ondo hitz egiten dutenak): eremu euskalduna % 50 baino gehiago, mistoa % 30–50, erdalduna % 30 baino gutxiago. Ezagutza da, ez erabilera. Iturriak: Eustat, 2021eko zentsua (EAE); Nastat, hizkuntza-eremu bakoitzeko datua, behin-behinekoa (Nafarroa Garaia); VII. Inkesta Soziolinguistikoa, hiru eremutan (Iparraldea).",
+      hiri_funtzionala: "Gaindegiaren «Hiriburuen eremu funtzionalak XXI. mendeko geografian» txostenaren irizpidea (2020): Eurostaten hiri-eremu funtzionaletako udalerriak (hiria eta bertako langileen % 15 gutxienez hirira lanera joaten diren udalerriak), bakoitza bere eremuarekin; eremu horietatik kanpokoak, urbanizazio-mailaren arabera: bitarteko hiriguneak (hiri ertainak eta periferiak) edo landa eremua. Iturria: Eurostat, LAU 2019.",
+      isurialdea: "Udal-lurraren zatirik handiena zein isurialdetan dagoen: atlantikoa (Kantauri itsasora, Aturriren arroa barne) edo mediterraneoa (Ebroren arroa). Iturria: EU-Hydro (Copernicus).",
+      ibai_arroa: "Udal-lurraren zatirik handiena zein ibai-arrotan dagoen, bere isurialdearen barruan: MapaMeteoko klima-mapako arroak, txikienak ondokoarekin batuta. Iturria: EU-Hydro (Copernicus).",
+      udal_tamaina: "Udalerriaren biztanleria, Gaindegiaren txostenaren tarteetan. Iturriak: Barne Ministerioa, 2023ko udal hauteskundeak (Hegoaldea); INSEE (Iparraldea).",
+      ikasketa_maila: "15 urteko eta gehiagoko biztanleetatik goi-mailako ikasketak dituztenen ehunekoa (goi-mailako LH, unibertsitatea…), 2023: apala % 35 baino gutxiago, ertaina % 35–45, altua % 45 edo gehiago. Iturriak: INE, urteko zentsua (Hegoaldea); INSEE, zentsua (Iparraldea).",
+      errenta_maila: "Kontsumo-unitateko errenta erabilgarriaren mediana, 2023 (zergen ondoren eta prestazioak barne; etxeko errenta kontsumo-unitateen artean banatuta: lehen helduak 1, 14 urtetik gorako beste bakoitzak 0,5 eta haur bakoitzak 0,3): apala 23.000 € baino gutxiago, ertaina 23.000–26.000 €, altua 26.000 € edo gehiago. Iturriak: INE, ADRH (Hegoaldea); INSEE, Filosofi (Iparraldea)." },
     ceraLbl: "Atzerriko botoa (CERA)", egoiliarrak: "egoiliarrak", ceraBarne: "Goiko emaitzetan batuta dago (lurraldeetan eta guztira). Mapako parte-hartzearen geruzak ez du barne hartzen (egoiliarrak).",
     ufAzalpena: "Alderdi edo bloke berak udal hauteskundeetan eta foru-parekoetan jasotako botoen aldea: EAEn Batzar Nagusiak eta Nafarroan Parlamentua (egun berean), Iparraldean kantonal hurbilenak. «Guztira»: aldeen batura erdia, hau da, bozkatzaileen zein zatik bozkatu duen bestela.",
     botoAldaketaOsoa: "boto aldaketa osoa", guztiraAukera: "Guztira (boto aldaketa osoa)",
@@ -238,6 +247,15 @@ const TESTUAK = {
     aggOharra: "Votos sumados por familias; las listas locales no cuentan para calcular el ganador.",
     aggOharraEH: "Votos sumados por familias; si las listas locales, todas juntas, quedan primeras, la zona va en gris.",
     tarteAzalpena: { errenta_maila: "Mediana de la renta disponible por unidad de consumo, 2023", ikasketa_maila: "Población de 15 años y más con estudios superiores, 2023" },
+    deskribapena: "Descripción", desk: { "udalerriak": "Municipios que la forman", "oharra": "Pulsa un municipio para ver sus resultados." },
+    balioIzena: { "euskara_eremua": "% euskaldunes", "udal_tamaina": "habitantes", "ikasketa_maila": "% estudios superiores", "errenta_maila": "renta (mediana)" },
+    mailaDesk: { euskara_eremua: "Porcentaje de euskaldunes de cada municipio (hablan euskera bien o bastante bien): zona euskalduna más del 50 %, mixta del 30 al 50 %, erdalduna menos del 30 %. Es conocimiento, no uso. Fuentes: Eustat, censo de 2021 (CAV); Nastat, dato de cada zona lingüística, provisional (Nafarroa Garaia); VII Encuesta Sociolingüística, en tres zonas (Iparralde).",
+      hiri_funtzionala: "Criterio del informe de Gaindegia «Hiriburuen eremu funtzionalak XXI. mendeko geografian» (2020): los municipios de las áreas urbanas funcionales de Eurostat (la ciudad y los municipios de los que al menos el 15 % de los ocupados va a trabajar a ella), cada uno con la suya; los de fuera, según su grado de urbanización: ciudades medianas y periferias (bitarteko hiriguneak) o zona rural (landa eremua). Fuente: Eurostat, LAU 2019.",
+      isurialdea: "Vertiente en la que cae la mayor parte del término municipal: atlántica (al Cantábrico, con la cuenca del Aturri) o mediterránea (cuenca del Ebro). Fuente: EU-Hydro (Copernicus).",
+      ibai_arroa: "Cuenca en la que cae la mayor parte del término municipal, dentro de su vertiente: las del mapa del clima de MapaMeteo, las más pequeñas juntas a una vecina. Fuente: EU-Hydro (Copernicus).",
+      udal_tamaina: "Población del municipio, en los tramos del informe de Gaindegia. Fuentes: Ministerio del Interior, municipales de 2023 (Hegoalde); INSEE (Iparralde).",
+      ikasketa_maila: "Porcentaje de la población de 15 años y más con estudios superiores (FP de grado superior, universidad…), 2023: bajo, menos del 35 %; medio, 35–45 %; alto, 45 % o más. Fuentes: INE, censo anual (Hegoalde); INSEE, censo (Iparralde).",
+      errenta_maila: "Mediana de la renta disponible por unidad de consumo, 2023 (después de impuestos y con prestaciones; la renta del hogar repartida entre sus unidades de consumo: el primer adulto 1, cada otra persona de 14 años o más 0,5 y cada niño 0,3): baja, menos de 23.000 €; media, 23.000–26.000 €; alta, 26.000 € o más. Fuentes: INE, ADRH (Hegoalde); INSEE, Filosofi (Iparralde)." },
     ceraLbl: "Voto exterior (CERA)", egoiliarrak: "residentes", ceraBarne: "Ya está sumado en los resultados de arriba (territorios y total). La capa de participación del mapa va sin él (residentes).",
     ufAzalpena: "Diferencia entre los votos de un mismo partido o bloque en las municipales y en su equivalente foral: Juntas Generales en la CAV y Parlamento en Navarra (el mismo día), cantonales más cercanas en Iparralde. «Total»: la mitad de la suma de las diferencias, es decir, la parte del electorado que votó distinto.",
     botoAldaketaOsoa: "cambio total de voto", guztiraAukera: "Total (cambio total de voto)",
@@ -333,6 +351,15 @@ const TESTUAK = {
     aggOharra: "Voix additionnées par familles ; les listes locales ne comptent pas pour le vainqueur.",
     aggOharraEH: "Voix additionnées par familles ; si les listes locales, toutes ensemble, arrivent en tête, la zone est en gris.",
     tarteAzalpena: { errenta_maila: "Revenu disponible médian par unité de consommation, 2023", ikasketa_maila: "Part des 15 ans ou plus diplômés du supérieur, 2023" },
+    deskribapena: "Description", desk: { "udalerriak": "Communes qui la composent", "oharra": "Cliquez sur une commune pour voir ses résultats." },
+    balioIzena: { "euskara_eremua": "% bascophones", "udal_tamaina": "habitants", "ikasketa_maila": "% diplômés du supérieur", "errenta_maila": "revenu (médiane)" },
+    mailaDesk: { euskara_eremua: "Pourcentage de bascophones de chaque commune (parlent bien ou assez bien le basque) : zone bascophone plus de 50 %, mixte de 30 à 50 %, non bascophone moins de 30 %. Il s'agit de connaissance, pas d'usage. Sources : Eustat, recensement 2021 (CAB) ; Nastat, donnée de chaque zone linguistique, provisoire (Nafarroa Garaia) ; VIIe Enquête sociolinguistique, en trois zones (Iparralde).",
+      hiri_funtzionala: "Critère du rapport de Gaindegia « Hiriburuen eremu funtzionalak XXI. mendeko geografian » (2020) : les communes des aires urbaines fonctionnelles d'Eurostat (la ville et les communes dont au moins 15 % des actifs occupés vont y travailler), chacune avec la sienne ; les autres, selon leur degré d'urbanisation : villes moyennes et périphéries (bitarteko hiriguneak) ou zone rurale (landa eremua). Source : Eurostat, LAU 2019.",
+      isurialdea: "Versant où se trouve la plus grande partie du territoire communal : atlantique (vers le golfe de Gascogne, bassin de l'Adour compris) ou méditerranéen (bassin de l'Èbre). Source : EU-Hydro (Copernicus).",
+      ibai_arroa: "Bassin versant où se trouve la plus grande partie du territoire communal, dans son versant : ceux de la carte du climat de MapaMeteo, les plus petits réunis à un voisin. Source : EU-Hydro (Copernicus).",
+      udal_tamaina: "Population de la commune, selon les tranches du rapport de Gaindegia. Sources : ministère de l'Intérieur espagnol, municipales 2023 (Hegoalde) ; INSEE (Iparralde).",
+      ikasketa_maila: "Part de la population de 15 ans ou plus diplômée de l'enseignement supérieur, 2023 : faible, moins de 35 % ; moyen, 35–45 % ; élevé, 45 % ou plus. Sources : INE, recensement annuel (Hegoalde) ; INSEE, recensement (Iparralde).",
+      errenta_maila: "Médiane du revenu disponible par unité de consommation, 2023 (après impôts et prestations comprises ; le revenu du ménage divisé par ses unités de consommation : 1 pour le premier adulte, 0,5 pour chaque autre personne de 14 ans ou plus, 0,3 par enfant) : faible, moins de 23 000 € ; moyen, 23 000–26 000 € ; élevé, 26 000 € ou plus. Sources : INE, ADRH (Hegoalde) ; INSEE, Filosofi (Iparralde)." },
     ceraLbl: "Vote des résidents à l'étranger (CERA)", egoiliarrak: "résidents", ceraBarne: "Déjà inclus dans les résultats ci-dessus (territoires et total). La couche de participation de la carte ne le compte pas (résidents).",
     ufAzalpena: "Écart entre les voix d'un même parti ou bloc aux municipales et à leur équivalent « foral » : Juntes générales en CAB et Parlement en Navarre (le même jour), cantonales les plus proches en Iparralde. « Total » : la moitié de la somme des écarts, c'est-à-dire la part de l'électorat qui a voté différemment.",
     botoAldaketaOsoa: "changement de vote total", guztiraAukera: "Total (changement de vote total)",
@@ -428,6 +455,15 @@ const TESTUAK = {
     aggOharra: "Votes added up by party family; local lists do not count towards the winner.",
     aggOharraEH: "Votes added up by party family; if local lists, taken together, come first, the area is shown in grey.",
     tarteAzalpena: { errenta_maila: "Median disposable income per consumption unit, 2023", ikasketa_maila: "People aged 15 and over with tertiary education, 2023" },
+    deskribapena: "Description", desk: { "udalerriak": "Municipalities in this area", "oharra": "Click a municipality to see its results." },
+    balioIzena: { "euskara_eremua": "% Basque speakers", "udal_tamaina": "inhabitants", "ikasketa_maila": "% tertiary education", "errenta_maila": "income (median)" },
+    mailaDesk: { euskara_eremua: "Share of Basque speakers in each municipality (speak Basque well or quite well): Basque-speaking area over 50%, mixed 30–50%, Spanish/French-speaking under 30%. This is knowledge, not use. Sources: Eustat, 2021 census (BAC); Nastat, figure for each language zone, provisional (Nafarroa Garaia); 7th Sociolinguistic Survey, in three areas (Iparralde).",
+      hiri_funtzionala: "Criterion of Gaindegia's report «Hiriburuen eremu funtzionalak XXI. mendeko geografian» (2020): municipalities in Eurostat functional urban areas (the city and the municipalities from which at least 15% of employed residents commute to it), each with its own; the rest by degree of urbanisation: towns and suburbs (bitarteko hiriguneak) or rural areas (landa eremua). Source: Eurostat, LAU 2019.",
+      isurialdea: "Drainage slope where most of the municipality's land lies: Atlantic (to the Bay of Biscay, including the Adour basin) or Mediterranean (Ebro basin). Source: EU-Hydro (Copernicus).",
+      ibai_arroa: "River basin where most of the municipality's land lies, within its slope: those of MapaMeteo's climate map, the smallest merged with a neighbour. Source: EU-Hydro (Copernicus).",
+      udal_tamaina: "Municipal population, in the bands of Gaindegia's report. Sources: Spanish Ministry of the Interior, 2023 local elections (Hegoalde); INSEE (Iparralde).",
+      ikasketa_maila: "Share of people aged 15 and over with tertiary education, 2023: low, under 35%; medium, 35–45%; high, 45% or more. Sources: INE, annual census (Hegoalde); INSEE, census (Iparralde).",
+      errenta_maila: "Median disposable income per consumption unit, 2023 (after taxes, including benefits; household income divided by its consumption units: 1 for the first adult, 0.5 for each other person aged 14 or over, 0.3 per child): low, under €23,000; medium, €23,000–26,000; high, €26,000 or more. Sources: INE, ADRH (Hegoalde); INSEE, Filosofi (Iparralde)." },
     ceraLbl: "Vote from abroad (CERA)", egoiliarrak: "residents", ceraBarne: "Already added to the results above (territories and total). The map's turnout layer leaves it out (residents only).",
     ufAzalpena: "Gap between the votes of the same party or bloc in local elections and in their provincial-level counterpart: General Assemblies in the BAC and Parliament in Navarre (same day), the nearest cantonal elections in Iparralde. «Total»: half the sum of the gaps, i.e. the share of voters who voted differently.",
     botoAldaketaOsoa: "total vote shift", guztiraAukera: "Total (total vote shift)",
@@ -515,7 +551,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "9488144314da";
+const VERSION = "6fc4ac30079c";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -618,7 +654,7 @@ if (INDEX.kategoriak[URL0.get("k")]) state.mapa = URL0.get("k");
 state.hauteskundea = hauteskundeak().includes(URL0.get("y")) ? URL0.get("y") : azkena();
 state.konparatu = hauteskundeak().includes(URL0.get("c")) ? URL0.get("c") : aurrekoa(state.hauteskundea) || state.hauteskundea;
 if (MODOS.includes(URL0.get("m"))) state.modua = URL0.get("m");
-if (["eserlekuak", "bilakaera"].includes(URL0.get("f"))) state.fitxa = URL0.get("f");  // pestaña del panel
+if (["eserlekuak", "bilakaera", "deskribapena"].includes(URL0.get("f"))) state.fitxa = URL0.get("f");  // pestaña del panel
 // (la fecha va con tres decimales: noviembre de 2019 = 2019.833, un poco antes de la elección; nunca antes de ella)
 if (zona(state.hauteskundea) !== "Azkenak") state.denboraT = URL0.has("t") && Number.isFinite(+URL0.get("t")) ? Math.max(+URL0.get("t"), dataZ(state.hauteskundea)) : dataZ(state.hauteskundea);
 state.bakarrik = URL0.get("b") === "1" && zona(state.hauteskundea) !== "Azkenak";
@@ -1095,17 +1131,26 @@ for (const k in GEO) sources[k] = { type: "geojson", data: { type: "FeatureColle
 const capas = [{ id: "fondo", type: "background", paint: { "background-color": MAPA_K.fondoa } },
                { id: "sat", type: "raster", source: "sat" },
                { id: "orto", type: "raster", source: "orto", minzoom: IRUDIAK.ortoMinZoom }];
+// Opacidad del relleno: más al pasar por encima y, más aún y fija, la del elegido (que se vea también sobre el satélite
+// del sur); sin satélite, casi opaco. [elegido, encima, el resto]
+const opakutasunak = () => (state.satelitea ? [.92, .85, .62] : [1, .96, .9]);
+const betegarria = () => { const [h, g, b] = opakutasunak();
+  return ["case", ["boolean", ["feature-state", "sel"], false], h, ["boolean", ["feature-state", "hover"], false], g, b]; };
 for (const k in GEO) capas.push(
   { id: k + "-fill", type: "fill", source: k, layout: { visibility: "none" },
     paint: { "fill-color": ["coalesce", ["get", "c"], NODATA],
-             "fill-opacity": ["case", ["boolean", ["feature-state", "hover"], false], .85, .62] } },
+             "fill-opacity": betegarria() } },
   // daturik gabeko eremuak, marradunak (zergatia argibidean)
   { id: k + "-hutsa", type: "fill", source: k, layout: { visibility: "none" }, filter: ["has", "z"],
     paint: { "fill-pattern": "marra", "fill-opacity": .9 } },
+  // el borde del elegido, con un halo oscuro (claro en la paleta clara) debajo: se distingue sobre cualquier fondo, también
+  // sobre los naranjas de «Lehian dauden eremuak» y el satélite del sur
+  { id: k + "-halo", type: "line", source: k, layout: { visibility: "none" },
+    paint: { "line-color": MAPA_K.halo, "line-width": ["case", ["boolean", ["feature-state", "sel"], false], 6.5, 0], "line-blur": .6 } },
   { id: k + "-line", type: "line", source: k, layout: { visibility: "none" },
     paint: { "line-color": ["case", ["boolean", ["feature-state", "sel"], false], MAPA_K.nabarmen,
                             ["boolean", ["feature-state", "hover"], false], MAPA_K.nabarmen, MAPA_K.muga],
-             "line-width": ["case", ["boolean", ["feature-state", "sel"], false], 2.6,
+             "line-width": ["case", ["boolean", ["feature-state", "sel"], false], 3,
                             ["boolean", ["feature-state", "hover"], false], 2.2, .7] } });
 // Enclaves (Trebiñu, Argantzun y Villaverde Turtzioz): solo en las municipales y las europeas, y solo en el total de
 // Euskal Herria (scripts/konfig.py, ENKLABEAK). No están en el polígono de Euskal Herria ni en ningún nivel agregado:
@@ -1114,7 +1159,7 @@ for (const k in GEO) capas.push(
 const ENKLABEAK = INDEX.enklabeak || [];
 sources.enklabeak = { type: "geojson", data: { type: "FeatureCollection", features: [] } };
 capas.push({ id: "enklabeak-fill", type: "fill", source: "enklabeak", layout: { visibility: "none" },
-  paint: { "fill-color": ["coalesce", ["get", "c"], NODATA], "fill-opacity": .62 } });
+  paint: { "fill-color": ["coalesce", ["get", "c"], NODATA], "fill-opacity": opakutasunak()[2] } });
 // Límites de los niveles superiores, siempre encima aunque el mapa muestre un nivel inferior:
 // herrialdes (dorado, más grueso), eskualdeak y, con las secciones, municipios
 sources["muga-lur"] = { type: "geojson", data: GEO.territorio };
@@ -1169,6 +1214,7 @@ function enklabeakEzarri() {
   const ikusi = ENKLABEAK.length && enklabeakDaude();
   for (const k of ["muni", "sec"]) {
     map.setFilter(k + "-fill", ikusi ? null : enklabeakGabe); map.setFilter(k + "-line", ikusi ? null : enklabeakGabe);
+    map.setFilter(k + "-halo", ikusi ? null : enklabeakGabe);
     map.setFilter(k + "-hutsa", ikusi ? ["has", "z"] : ["all", ["has", "z"], enklabeakGabe]);
   }
   mugakIragazi(ikusi);
@@ -1180,10 +1226,12 @@ function enklabeakEzarri() {
   map.setLayerZoomRange("enklabeak-fill", 0, state.maila === "auto" ? muni[1] : 24);
   const ehKolorea = color("eh", estaldura()), ehBista = state.maila === "eh";
   // en una zona de toda Euskal Herria (euskara, adierazleak) el enclave cuenta en ella: su color
-  const l = mailaAktiboa(), zonarena = (i) => { const z = (INDEX.enklabeZonak || {})[i]; return z && z[l] ? color(l, `Euskal Herria|${z[l]}`) : null; };
-  const fs = GEO.muni.features.filter((f) => ENKLABEAK.includes(String(f.id))).map((f) => ({ ...f,
-    properties: { ...f.properties, c: ehBista ? ehKolorea : zonarena(String(f.id)) || color("muni", String(f.id)), ceh: ehKolorea } }));
+  const l = mailaAktiboa(), zonaId = (i) => { const z = (INDEX.enklabeZonak || {})[i]; return z && z[l] ? `Euskal Herria|${z[l]}` : null; };
+  const fs = GEO.muni.features.filter((f) => ENKLABEAK.includes(String(f.id))).map((f) => { const zid = zonaId(String(f.id));
+    return { ...f, properties: { ...f.properties, c: ehBista ? ehKolorea : zid ? color(l, zid) : color("muni", String(f.id)), ceh: ehKolorea,
+                                 ...(zid ? { zid } : {}) } }; });
   map.getSource("enklabeak").setData({ type: "FeatureCollection", features: fs });
+  enklabeakNabarmendu();
   // en automático: color de Euskal Herria mientras se ve el nivel «eh», luego el suyo
   map.setPaintProperty("enklabeak-fill", "fill-color", state.maila === "auto" && eh
     ? ["step", ["zoom"], ["coalesce", ["get", "ceh"], NODATA], eh[2], ["coalesce", ["get", "c"], NODATA]] : ["coalesce", ["get", "c"], NODATA]);
@@ -1208,7 +1256,7 @@ function ezarriMaila() {
   enklabeakEzarri();
   for (const k in GEO) {
     const vis = state.maila === "auto" ? autoMailak().some(a => a[0] === k) : k === state.maila;
-    for (const suf of ["-fill", "-hutsa", "-line"]) {
+    for (const suf of ["-fill", "-hutsa", "-halo", "-line"]) {
       map.setLayoutProperty(k + suf, "visibility", vis ? "visible" : "none");
       if (vis) {
         const a = state.maila === "auto" ? autoMailak().find(x => x[0] === k) : null;
@@ -1219,6 +1267,12 @@ function ezarriMaila() {
   }
 }
 
+// Los enclaves de la zona elegida (en una de toda Euskal Herria), tan intensos como ella: su capa no tiene feature-state
+function enklabeakNabarmendu() {
+  const [h, , b] = opakutasunak();
+  if (estiloaPrest && map.getLayer("enklabeak-fill"))
+    map.setPaintProperty("enklabeak-fill", "fill-opacity", ["case", ["==", ["get", "zid"], state.hautatua || ""], h, b]);
+}
 // ---- resaltado y selección con feature-state: toca una feature, no la capa ----
 let hov = null, sel = null;
 const capasFill = Object.keys(GEO).map(k => k + "-fill");
@@ -1284,6 +1338,7 @@ map.on("click", (e) => { if (!map.queryRenderedFeatures(e.point, { layers: capas
 function hautatu(id, src, gero = false) {
   markatu(sel, "sel", false); sel = null; state.hautatua = id;
   if (id) { sel = { source: src || mailaAktiboa(), id }; markatu(sel, "sel", true); }
+  enklabeakNabarmendu();
   if (gero) arnasa().then(() => { if (state.hautatua === id) margotu(); }); else margotu();
 }
 map.on("moveend", () => urlaIdatzi());
@@ -1492,7 +1547,46 @@ function tarteAzalpena(id) {
   const tartea = lo == null ? `<\u00a0${u(hi)}` : hi == null ? `≥\u00a0${u(lo)}` : `${u(lo)}\u00a0–\u00a0${u(hi)}`;
   return `<p class="hint">${esc((T.tarteAzalpena || {})[l] || "")}: <b>${tartea}</b></p>`;
 }
-function margotu() { if (typeof izenakBerritu === "function") izenakBerritu(); ufSelektorea(); urlaIdatzi(); $("#body").innerHTML = state.fitxa === "eserlekuak" ? eserlekuakOrria() : state.fitxa === "bilakaera" ? bilakaeraOrria() : state.hautatua ? xehetasuna(state.hautatua) : laburpena(); const c = $("#closebtn"); if (c) c.addEventListener("click", () => hautatu(null));
+// ---- «Deskribapena»: qué es una zona de toda Euskal Herria y qué municipios la forman (data/eremuak.json) ----
+let EREMU_DATUAK = null, eremuPromesa = null;  // los datos, cuando ya han llegado; la petición, una sola vez
+const eremuDatuak = () => (EREMU_DATUAK ? Promise.resolve(EREMU_DATUAK)
+  : (eremuPromesa = eremuPromesa || load("data/eremuak.json").then((d) => (EREMU_DATUAK = d)).catch((e) => { eremuPromesa = null; throw e; })));
+const EREMU_BALIOA = { euskara_eremua: (v) => pct(v), udal_tamaina: (v) => fmt(v), ikasketa_maila: (v) => pct(v), errenta_maila: (v) => `${fmt(v)}\u00a0€` };
+const HERRIALDE_ORDENA = ["Araba", "Bizkaia", "Gipuzkoa", "Nafarroa", "Lapurdi", "Behe Nafarroa", "Zuberoa"];
+// Los municipios de la zona por herrialdes (los enclaves, al final), cada uno con su dato: [[herrialde, [[ine, izena, balioa]]]]
+function zonarenUdalerriak(D, l, izena) {
+  const bal = (D.balioak || {})[l] || {}, taldeak = new Map();
+  for (const i of ((D.kideak || {})[l] || {})[izena] || []) {
+    const m = MUNIS[i]; if (!m) continue;
+    if (!taldeak.has(m.t)) taldeak.set(m.t, []);
+    taldeak.get(m.t).push([i, m.n, bal[i]]);
+  }
+  const ordena = (t) => { const n = HERRIALDE_ORDENA.indexOf(t); return n < 0 ? 99 : n; };
+  return [...taldeak].sort((a, b) => ordena(a[0]) - ordena(b[0]))
+    .map(([t, us]) => [t, us.sort((a, b) => a[1].localeCompare(b[1], LOKALEA))]);
+}
+function deskribapenaOrria() {
+  const id = String(state.hautatua || ""), l = mailaAktiboa(), izena = id.split("|")[1];
+  if (!ehZonaHautatua()) return laburpena();
+  if (!EREMU_DATUAK) {
+    eremuDatuak().then(() => { if (state.fitxa === "deskribapena") margotu(); }).catch(() => {});
+    return `<p class="hint">${T.kargatzen}</p>`;
+  }
+  const taldeak = zonarenUdalerriak(EREMU_DATUAK, l, izena), n = taldeak.reduce((a, [, us]) => a + us.length, 0);
+  const f = EREMU_BALIOA[l], balioIzena = (T.balioIzena || {})[l];
+  const zerrenda = taldeak.map(([t, us]) => `<div class="lbl">${esc(lurIzena(t))} · ${us.length}</div>` + us.map(([i, iz, v]) =>
+    `<div class="row"><span class="nm"><button type="button" class="lotura" data-muni="${esc(i)}">${esc(iz)}</button></span>${f && v != null ? `<span class="val">${f(v)}</span>` : ""}</div>`).join("")).join("");
+  return `<div class="hdr"><div><h2>${esc(izena)}</h2><div class="meta">${esc(T.mailak[l] || LEVELS[l] || l)} · ${n} ${T.udalerri}</div></div>${folioBotoia()}<button class="close" aria-label="${T.itxi}" id="closebtn">×</button></div>
+    ${tarteAzalpena(id)}<p class="hint">${esc((T.mailaDesk || {})[l] || "")}</p>
+    <div class="rule"></div><div class="lbl">${T.desk.udalerriak} · ${n}${balioIzena ? ` · ${esc(balioIzena)}` : ""}</div>
+    <p class="hint">${T.desk.oharra}</p>${zerrenda}`;
+}
+// un municipio de la lista: a él, en el mapa y en el panel (sus resultados)
+$("#body").addEventListener("click", (e) => {
+  const b = e.target.closest("[data-muni]"); if (!b) return;
+  state.fitxa = "emaitzak"; joan("muni", b.dataset.muni);
+});
+function margotu() { if (typeof izenakBerritu === "function") izenakBerritu(); ufSelektorea(); fitxakEguneratu(); urlaIdatzi(); $("#body").innerHTML = state.fitxa === "eserlekuak" ? eserlekuakOrria() : state.fitxa === "deskribapena" ? deskribapenaOrria() : state.fitxa === "bilakaera" ? bilakaeraOrria() : state.hautatua ? xehetasuna(state.hautatua) : laburpena(); const c = $("#closebtn"); if (c) c.addEventListener("click", () => hautatu(null));
   const mu = $("#munira"); if (mu) mu.addEventListener("click", () => joan("muni", String(state.hautatua).slice(0, 5))); ogiApurrak(); }
 // ---- controles ----
 // Desplegable de convocatorias de la categoría, agrupadas por zona (las más recientes primero)
@@ -1801,7 +1895,8 @@ ortoKreditua();
 function sateliteaEzarri() {
   for (const l of ["sat", "orto"]) map.setLayoutProperty(l, "visibility", state.satelitea ? "visible" : "none");
   ortoKreditua();
-  for (const k in GEO) map.setPaintProperty(k + "-fill", "fill-opacity", ["case", ["boolean", ["feature-state", "hover"], false], .9, state.satelitea ? .62 : .9]);
+  for (const k in GEO) map.setPaintProperty(k + "-fill", "fill-opacity", betegarria());
+  enklabeakNabarmendu();
 }
 $("#basemap").addEventListener("click", () => { state.satelitea = !state.satelitea; $("#basemap").setAttribute("aria-pressed", state.satelitea);
   if (estiloaPrest) sateliteaEzarri(); else map.once("style.load", sateliteaEzarri);  // ver ezarriMaila (03-mapa.js)
@@ -1841,6 +1936,7 @@ function mapaKoloreakSoilik() {
   map.setPaintProperty("muga-esk", "line-color", MAPA_K.mugaEsk);
   map.setPaintProperty("muga-lur", "line-color", MAPA_K.mugaLur);
   for (const k in GEO) {
+    map.setPaintProperty(k + "-halo", "line-color", MAPA_K.halo);
     map.setPaintProperty(k + "-line", "line-color",
       ["case", ["boolean", ["feature-state", "sel"], false], MAPA_K.nabarmen,
                ["boolean", ["feature-state", "hover"], false], MAPA_K.nabarmen, MAPA_K.muga]);
@@ -1927,7 +2023,7 @@ document.addEventListener("keydown", (e) => {
   if (k === "s") { $("#basemap").click(); return; }
   if (k === "i") { $("#tema").click(); return; }
   if (k === "p") { play(); return; }
-  if (k === "k") fitxaAldatu(state.fitxa === "eserlekuak" ? "emaitzak" : "eserlekuak");
+  if (k === "k") fitxaAldatu(state.fitxa === bigarrenFitxa() ? "emaitzak" : bigarrenFitxa());
 });
 
 // ---- Móvil: la hoja de resultados se despliega tocando el asa o arrastrando el asa / las pestañas ----
@@ -2097,7 +2193,18 @@ function eserlekuakOrria() {
   return `<div class="hdr"><div><h2>${T.eserlekuak}</h2><div class="meta">${non ? non + " · " : ""}${izena(k)}${osag().izena ? ` + ${osag().izena}` : ""}</div></div></div>${html}${oharrak.map(o => `<p class="hint">${o}</p>`).join("")}` +
     (!html ? `<p class="hint">${h.t || h.zona ? T.eserlekurikEzHemen : T.eserlekurikEz}</p>` : "");
 }
-// Pestañas del panel
+// Pestañas del panel. En una zona de toda Euskal Herria (euskara, adierazleak) no hay escaños que contar: en su sitio,
+// «Deskribapena» (qué es la zona y qué municipios la forman)
+function ehZonaHautatua() { return String(state.hautatua || "").startsWith("Euskal Herria|"); }
+function bigarrenFitxa() { return ehZonaHautatua() ? "deskribapena" : "eserlekuak"; }
+function fitxakEguneratu() {
+  const bigarrena = bigarrenFitxa();
+  if (["eserlekuak", "deskribapena"].includes(state.fitxa)) state.fitxa = bigarrena;
+  document.querySelectorAll("#hudfitxak [role=tab]").forEach((b) => {
+    if (["eserlekuak", "deskribapena"].includes(b.dataset.fitxa)) b.hidden = b.dataset.fitxa !== bigarrena;
+    b.setAttribute("aria-selected", b.dataset.fitxa === state.fitxa);
+  });
+}
 function fitxaAldatu(f) {
   state.fitxa = f;
   document.querySelectorAll("#hudfitxak [role=tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.fitxa === f));
@@ -2108,7 +2215,8 @@ document.querySelectorAll("#hudfitxak [role=tab]").forEach(b => { b.setAttribute
 // Dos páginas con lo que la web sabe de la zona elegida: quién es, la última elección de cada mapa y en qué se
 // aparta de lo que la rodea; y cómo ha cambiado desde 2011 y de qué está hecha, con un mapa de sus piezas un
 // escalón por debajo (Euskal Herria → herrialdes, Gipuzkoa → eskualdeak, Goierri → udalerriak, Donostia →
-// sekzioak), cada una del color de quien gana en ella. Las cifras son las que ya publica la web: se leen de
+// sekzioak), cada una del color de quien gana en ella. En una zona de toda Euskal Herria (euskara, adierazleak), además,
+// qué es y todos sus municipios (las páginas que hagan falta). Las cifras son las que ya publica la web: se leen de
 // data/ como las lee el panel, no se recalculan.
 // El folio va en tema claro (es el que se imprime) y con las letras del sitio.
 // jsPDF y las letras se cargan solo al pulsar: son 530 kB que no hacen falta para ver el mapa.
@@ -2179,10 +2287,13 @@ function folioOsagaiak(z, kat) {
   }
   return out;
 }
-// Los municipios de la zona. La web solo publica la pertenencia de los herrialdes y las comarcas (index.json):
-// en los demás niveles agregados (barrutis, barruti judizialak…) no se puede saber, y el folio lo dice.
+// Los municipios de la zona. La web publica la pertenencia de los herrialdes y las comarcas (index.json) y la de las zonas
+// de toda Euskal Herria (data/eremuak.json): en los demás niveles agregados (barrutis, barruti judizialak…) no se puede
+// saber, y el folio lo dice.
+const folioEhZona = (z) => String(z.id).startsWith("Euskal Herria|");
 function folioIneak(z) {
   if (z.maila === "muni") return new Set([z.id]);
+  if (folioEhZona(z)) return EREMU_DATUAK && EREMU_DATUAK.kideak ? new Set(((EREMU_DATUAK.kideak[z.maila] || {})[z.raw]) || []) : null;
   if (z.maila === "eh") return new Set(Object.keys(MUNIS));
   const bal = Object.entries(MUNIS);
   if (z.maila === "territorio") return new Set(bal.filter(([, m]) => m.t === z.raw).map(([i]) => i));
@@ -2254,6 +2365,7 @@ async function folioDatuak(z) {
     GEO.muni.features.length ? null : load("geo/udalerriak.geojson").then((g) => { GEO.muni = g; }).catch(() => {}),
   ]);
   if (z.maila === "muni") await Promise.all([est, ...folioZatiak(est)].map(sekzioDatuak));
+  if (folioEhZona(z)) await eremuDatuak().catch(() => null);
   const muniGeo = GEO.muni.features.length ? GEO.muni : null;
   const d = bil && z.maila !== "muni" ? bil[z.id] || null : bil;
   return { bil: d, sekGeo, muniGeo };
@@ -2437,7 +2549,7 @@ function foHauteskundea(doc, z, kat, y) {
     foTxipa(doc, x0 + (i % 3) * zut, y + 12.5 + Math.floor(i / 3) * 4.4, c[1], `${izen_} ${foPct(c[3])}`, zut);
   }
   let azkena = y + 12.5 + (Math.floor((kop - 1) / 3) + 1) * 4.4;
-  if (r.esc) {
+  if (r.esc && !folioEhZona(z)) {  // (en una zona de toda Euskal Herria no hay escaños que contar)
     // en un municipio, los concejales de cada candidatura; en una zona agregada, solo se publica el total
     const eser = r.c.filter((c) => c.length > 4 && c[4]);
     const testua = eser.length ? `${T.folio.zinegotziak}: ` + eser.map((c) => `${foLabur(c[1], kat)} ${c[4]}`).join(" · ")
@@ -2604,13 +2716,66 @@ function foZatikaBlokea(doc, z, kat, y, D) {
   return Math.max(yy, y + (geoak.length ? h + 5 : 0)) + 2;
 }
 
+// Zona de toda Euskal Herria: qué es (el texto de «Deskribapena») y todos sus municipios, por herrialdes, en columnas que
+// siguen en otra página si no caben. Primero se reparte (para saber cuántas páginas tiene el folio) y luego se dibuja.
+const FO_DESK_ZUT = 4, FO_DESK_LERRO = 3.6, FO_DESK_BEHEA = FO_H - FO_ERTZA - 12;
+const foTestua = (s) => String(s).replace(/[\u00a0\u202f]/g, " ");  // las letras del folio no tienen el espacio fino
+function folioDeskribapena(doc, z) {
+  const taldeak = zonarenUdalerriak(EREMU_DATUAK || {}, z.maila, z.raw);
+  if (!taldeak.length) return null;
+  doc.setFont("Saira", "normal"); doc.setFontSize(8.5);
+  const testua = doc.splitTextToSize(foTestua((T.mailaDesk || {})[z.maila] || ""), FO_ZAB - 2 * FO_C);
+  const f = EREMU_BALIOA[z.maila], n = taldeak.reduce((a, [, us]) => a + us.length, 0);
+  const errenkadak = taldeak.flatMap(([t, us]) => [{ lur: true, izena: `${lurIzena(t)} · ${us.length}` },
+    ...us.map(([, iz, v]) => ({ izena: iz, balioa: f && v != null ? foTestua(f(v)) : "" }))]);
+  // en columnas: la primera página empieza debajo del texto; un herrialde no se queda solo al pie de una columna
+  const goia1 = FO_ERTZA + 18 + 7.5 + testua.length * 4 + 9, goiaN = FO_ERTZA + 18 + 7.5;
+  const orriak = [[[]]];
+  let y = goia1;
+  errenkadak.forEach((e, i) => {
+    const lekua = (k) => y + k * FO_DESK_LERRO <= FO_DESK_BEHEA;
+    if (!lekua(1) || (e.lur && !lekua(2) && i < errenkadak.length - 1)) {
+      const orria = orriak.at(-1);
+      if (orria.length < FO_DESK_ZUT) orria.push([]); else orriak.push([[]]);
+      y = orriak.length === 1 ? goia1 : goiaN;
+    }
+    orriak.at(-1).at(-1).push(e);
+    y += FO_DESK_LERRO;
+  });
+  return { testua, orriak, n };
+}
+function foDeskribapena(doc, z, desk, orria, guztira) {
+  desk.orriak.forEach((zutabeak, p) => {
+    if (p) { foOina(doc, z); doc.addPage(); }
+    let y = foAtala(doc, foGoiburua(doc, z, orria + p, guztira), p ? `${T.deskribapena} (${p + 1})` : T.deskribapena);
+    if (!p) {
+      desk.testua.forEach((lerroa) => { foT(doc, FO_ERTZA, y, lerroa, "Saira", 8.5, FO_TINTA); y += 4; });
+      y += 2;
+      const balioIzena = (T.balioIzena || {})[z.maila];
+      foT(doc, FO_ERTZA, y, `${T.desk.udalerriak} · ${desk.n}${balioIzena ? ` · ${balioIzena}` : ""}`.toUpperCase(), "SairaM", 7.5, FO_ILUN);
+      y += 7;
+    }
+    const zutW = (FO_ZAB - (FO_DESK_ZUT - 1) * 4) / FO_DESK_ZUT;
+    zutabeak.forEach((errenkadak, c) => {
+      const x = FO_ERTZA + c * (zutW + 4);
+      errenkadak.forEach((e, i) => {
+        const yy = y + i * FO_DESK_LERRO;
+        if (e.lur) { foT(doc, x, yy, foMoztu(doc, e.izena.toUpperCase(), zutW, "SairaB", 6.8), "SairaB", 6.8, FO_URREA, zutW); return; }
+        const wBal = e.balioa ? 15 : 0;
+        foT(doc, x, yy, foMoztu(doc, e.izena, zutW - wBal - 1, "Saira", 6.8), "Saira", 6.8, FO_TINTA, zutW - wBal);
+        if (e.balioa) foT(doc, x + zutW - wBal, yy, e.balioa, "Mono", 6.2, FO_LAUSO, wBal, "R");
+      });
+    });
+  });
+}
+
 function foOina(doc, z) {  // pie: de dónde salen los datos y dónde está esta misma vista en la web
   const y = FO_H - FO_ERTZA - 8;
   foMarra(doc, FO_ERTZA, y, FO_W - FO_ERTZA, y);
   foT(doc, FO_ERTZA, y + 1.8, T.folio.iturriak, "Saira", 7, FO_ILUN);
   foT(doc, FO_ERTZA, y + 5.4, foMoztu(doc, folioLotura(z), FO_ZAB, "Mono", 6.5), "Mono", 6.5, FO_LAUSO);
 }
-const folioLotura = (z) => `${BASE.replace(/\/$/, "")}/#k=estatu&y=${folioBizirik("estatu")}${z.maila === "eh" ? "" : `&s=${z.id}`}${HIZK !== "eu" ? `&l=${HIZK}` : ""}`;
+const folioLotura = (z) => `${BASE.replace(/\/$/, "")}/#k=estatu&y=${folioBizirik("estatu")}${folioEhZona(z) ? `&e=${z.maila}` : ""}${z.maila === "eh" ? "" : `&s=${z.id}`}${HIZK !== "eu" ? `&l=${HIZK}` : ""}`;
 
 // ---- el folio ----
 async function folioa() {
@@ -2619,9 +2784,10 @@ async function folioa() {
   const doc = new jsPDF({ orientation: "p", unit: "mm", format: "a4", compress: true });  // comprimido: el folio baja de 200 kB a unas decenas
   for (const [izen, b64] of Object.entries(letrak)) { doc.addFileToVFS(`${izen}.ttf`, b64); doc.addFont(`${izen}.ttf`, izen, "normal"); }
   doc.setProperties({ title: `${z.izena} · ${T.folio.izenburua}`, creator: T.folio.izenburua });
+  const desk = folioEhZona(z) ? folioDeskribapena(doc, z) : null, guztira = 2 + (desk ? desk.orriak.length : 0);
 
   // 1. quién es, la última de cada mapa y en qué se aparta de lo que la rodea
-  let y = foKpiak(doc, z, foGoiburua(doc, z, 1, 2), D);
+  let y = foKpiak(doc, z, foGoiburua(doc, z, 1, guztira), D);
   y = foAtala(doc, y, T.folio.azkenHauteskundeak);
   for (const kat of KATS) y = foHauteskundea(doc, z, kat, y);
   if (folioAldeak(z, "estatu")) {  // Euskal Herria no se compara con nada: no hay sección
@@ -2632,7 +2798,7 @@ async function folioa() {
 
   // 2. cómo ha cambiado y de qué está hecha
   doc.addPage();
-  y = foAtala(doc, foGoiburua(doc, z, 2, 2), T.folio.bilakaera2011);
+  y = foAtala(doc, foGoiburua(doc, z, 2, guztira), T.folio.bilakaera2011);
   const zutW = (FO_ZAB - 10) / 2;
   KATS.forEach((kat, i) => foGrafikoa(doc, z, kat, FO_ERTZA + (i % 2) * (zutW + 10), y + Math.floor(i / 2) * 42, zutW, 38, D));
   if (KATS.length % 2) foAldaketa(doc, z, "estatu", FO_ERTZA + zutW + 10, y + Math.floor(KATS.length / 2) * 42, zutW, 38, D);
@@ -2646,6 +2812,9 @@ async function folioa() {
     y = foAtala(doc, y, T.folio.zatika); foZatikaBlokea(doc, z, "estatu", y, D);
   }
   foOina(doc, z);
+
+  // 3. (zonas de toda Euskal Herria) qué es y qué municipios la forman
+  if (desk) { doc.addPage(); foDeskribapena(doc, z, desk, 3, guztira); foOina(doc, z); }
 
   doc.save(`${T.folio.fitxategia}_${folioSlug(z.izena)}.pdf`);
   return z;
