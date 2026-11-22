@@ -141,11 +141,11 @@ const TESTUAK = {
     aggOharraEH: "Botoak familiaka batuta; tokiko zerrendak, guztiak batera, lehenak badira, eremua grisez.",
     tarteAzalpena: { errenta_maila: "Kontsumo-unitateko errenta erabilgarriaren mediana, 2023", ikasketa_maila: "15 urtetik gorakoetan goi-mailako ikasketak dituztenak, 2023" },
     deskribapena: "Deskribapena", desk: { "udalerriak": "Osatzen duten udalerriak", "oharra": "Sakatu udalerri bat bere emaitzak ikusteko." },
-    balioIzena: { "euskara_eremua": "% euskaldun", "udal_tamaina": "biztanle", "ikasketa_maila": "% goi-ikasketak", "errenta_maila": "errenta (mediana)" },
+    zatia: "zatia", balioIzena: { "ibai_arroa": "udalerri zatituak: erroldaren %", "euskara_eremua": "% euskaldun", "udal_tamaina": "biztanle", "ikasketa_maila": "% goi-ikasketak", "errenta_maila": "errenta (mediana)" },
     mailaDesk: { euskara_eremua: "Udalerri bakoitzeko euskaldunen ehunekoa (euskara ondo edo nahiko ondo hitz egiten dutenak): eremu euskalduna % 50 baino gehiago, mistoa % 30–50, erdalduna % 30 baino gutxiago. Ezagutza da, ez erabilera. Iturriak: Eustat, 2021eko zentsua (EAE); Nastat, hizkuntza-eremu bakoitzeko datua, behin-behinekoa (Nafarroa Garaia); VII. Inkesta Soziolinguistikoa, hiru eremutan (Iparraldea).",
       hiri_funtzionala: "Gaindegiaren «Hiriburuen eremu funtzionalak XXI. mendeko geografian» txostenaren irizpidea (2020): Eurostaten hiri-eremu funtzionaletako udalerriak (hiria eta bertako langileen % 15 gutxienez hirira lanera joaten diren udalerriak), bakoitza bere eremuarekin; eremu horietatik kanpokoak, urbanizazio-mailaren arabera: bitarteko hiriguneak (hiri ertainak eta periferiak) edo landa eremua. Iturria: Eurostat, LAU 2019.",
       isurialdea: "Udal-lurraren zatirik handiena zein isurialdetan dagoen: atlantikoa (Kantauri itsasora, Aturriren arroa barne) edo mediterraneoa (Ebroren arroa). Iturria: EU-Hydro (Copernicus).",
-      ibai_arroa: "Udal-lurraren zatirik handiena zein ibai-arrotan dagoen, bere isurialdearen barruan: MapaMeteoko klima-mapako arroak, txikienak ondokoarekin batuta. Iturria: EU-Hydro (Copernicus).",
+      ibai_arroa: "MapaMeteoko klima-mapako arroak, txikienak ondokoarekin batuta. Hegoaldean sekzioka: sekzio bakoitza bere arroan, eta arro batean baino gehiagotan sekzioak dituen udalerria zatituta (Donostia: Urumea, Oiartzun eta Oria); sekziorik gabeko hauteskundeetan, erroldaren zatirik handiena duen arroan. Iparraldean, udal-lurraren zatirik handiena duen arroan. Iturria: EU-Hydro (Copernicus).",
       udal_tamaina: "Udalerriaren biztanleria, Gaindegiaren txostenaren tarteetan. Iturriak: Barne Ministerioa, 2023ko udal hauteskundeak (Hegoaldea); INSEE (Iparraldea).",
       ikasketa_maila: "15 urteko eta gehiagoko biztanleetatik goi-mailako ikasketak dituztenen ehunekoa (goi-mailako LH, unibertsitatea…), 2023: apala % 35 baino gutxiago, ertaina % 35–45, altua % 45 edo gehiago. Iturriak: INE, urteko zentsua (Hegoaldea); INSEE, zentsua (Iparraldea).",
       errenta_maila: "Kontsumo-unitateko errenta erabilgarriaren mediana, 2023 (zergen ondoren eta prestazioak barne; etxeko errenta kontsumo-unitateen artean banatuta: lehen helduak 1, 14 urtetik gorako beste bakoitzak 0,5 eta haur bakoitzak 0,3): apala 23.000 € baino gutxiago, ertaina 23.000–26.000 €, altua 26.000 € edo gehiago. Iturriak: INE, ADRH (Hegoaldea); INSEE, Filosofi (Iparraldea)." },
@@ -248,11 +248,11 @@ const TESTUAK = {
     aggOharraEH: "Votos sumados por familias; si las listas locales, todas juntas, quedan primeras, la zona va en gris.",
     tarteAzalpena: { errenta_maila: "Mediana de la renta disponible por unidad de consumo, 2023", ikasketa_maila: "Población de 15 años y más con estudios superiores, 2023" },
     deskribapena: "Descripción", desk: { "udalerriak": "Municipios que la forman", "oharra": "Pulsa un municipio para ver sus resultados." },
-    balioIzena: { "euskara_eremua": "% euskaldunes", "udal_tamaina": "habitantes", "ikasketa_maila": "% estudios superiores", "errenta_maila": "renta (mediana)" },
+    zatia: "parte", balioIzena: { "ibai_arroa": "municipios partidos: % del censo", "euskara_eremua": "% euskaldunes", "udal_tamaina": "habitantes", "ikasketa_maila": "% estudios superiores", "errenta_maila": "renta (mediana)" },
     mailaDesk: { euskara_eremua: "Porcentaje de euskaldunes de cada municipio (hablan euskera bien o bastante bien): zona euskalduna más del 50 %, mixta del 30 al 50 %, erdalduna menos del 30 %. Es conocimiento, no uso. Fuentes: Eustat, censo de 2021 (CAV); Nastat, dato de cada zona lingüística, provisional (Nafarroa Garaia); VII Encuesta Sociolingüística, en tres zonas (Iparralde).",
       hiri_funtzionala: "Criterio del informe de Gaindegia «Hiriburuen eremu funtzionalak XXI. mendeko geografian» (2020): los municipios de las áreas urbanas funcionales de Eurostat (la ciudad y los municipios de los que al menos el 15 % de los ocupados va a trabajar a ella), cada uno con la suya; los de fuera, según su grado de urbanización: ciudades medianas y periferias (bitarteko hiriguneak) o zona rural (landa eremua). Fuente: Eurostat, LAU 2019.",
       isurialdea: "Vertiente en la que cae la mayor parte del término municipal: atlántica (al Cantábrico, con la cuenca del Aturri) o mediterránea (cuenca del Ebro). Fuente: EU-Hydro (Copernicus).",
-      ibai_arroa: "Cuenca en la que cae la mayor parte del término municipal, dentro de su vertiente: las del mapa del clima de MapaMeteo, las más pequeñas juntas a una vecina. Fuente: EU-Hydro (Copernicus).",
+      ibai_arroa: "Las cuencas del mapa del clima de MapaMeteo, las más pequeñas juntas a una vecina. En Hegoalde, por secciones: cada sección en su cuenca, y el municipio con secciones en varias, partido (Donostia: Urumea, Oiartzun y Oria); en las elecciones sin secciones, en la cuenca de la mayor parte de su censo. En Iparralde, en la de la mayor parte del término. Fuente: EU-Hydro (Copernicus).",
       udal_tamaina: "Población del municipio, en los tramos del informe de Gaindegia. Fuentes: Ministerio del Interior, municipales de 2023 (Hegoalde); INSEE (Iparralde).",
       ikasketa_maila: "Porcentaje de la población de 15 años y más con estudios superiores (FP de grado superior, universidad…), 2023: bajo, menos del 35 %; medio, 35–45 %; alto, 45 % o más. Fuentes: INE, censo anual (Hegoalde); INSEE, censo (Iparralde).",
       errenta_maila: "Mediana de la renta disponible por unidad de consumo, 2023 (después de impuestos y con prestaciones; la renta del hogar repartida entre sus unidades de consumo: el primer adulto 1, cada otra persona de 14 años o más 0,5 y cada niño 0,3): baja, menos de 23.000 €; media, 23.000–26.000 €; alta, 26.000 € o más. Fuentes: INE, ADRH (Hegoalde); INSEE, Filosofi (Iparralde)." },
@@ -352,11 +352,11 @@ const TESTUAK = {
     aggOharraEH: "Voix additionnées par familles ; si les listes locales, toutes ensemble, arrivent en tête, la zone est en gris.",
     tarteAzalpena: { errenta_maila: "Revenu disponible médian par unité de consommation, 2023", ikasketa_maila: "Part des 15 ans ou plus diplômés du supérieur, 2023" },
     deskribapena: "Description", desk: { "udalerriak": "Communes qui la composent", "oharra": "Cliquez sur une commune pour voir ses résultats." },
-    balioIzena: { "euskara_eremua": "% bascophones", "udal_tamaina": "habitants", "ikasketa_maila": "% diplômés du supérieur", "errenta_maila": "revenu (médiane)" },
+    zatia: "partie", balioIzena: { "ibai_arroa": "communes partagées : % des électeurs", "euskara_eremua": "% bascophones", "udal_tamaina": "habitants", "ikasketa_maila": "% diplômés du supérieur", "errenta_maila": "revenu (médiane)" },
     mailaDesk: { euskara_eremua: "Pourcentage de bascophones de chaque commune (parlent bien ou assez bien le basque) : zone bascophone plus de 50 %, mixte de 30 à 50 %, non bascophone moins de 30 %. Il s'agit de connaissance, pas d'usage. Sources : Eustat, recensement 2021 (CAB) ; Nastat, donnée de chaque zone linguistique, provisoire (Nafarroa Garaia) ; VIIe Enquête sociolinguistique, en trois zones (Iparralde).",
       hiri_funtzionala: "Critère du rapport de Gaindegia « Hiriburuen eremu funtzionalak XXI. mendeko geografian » (2020) : les communes des aires urbaines fonctionnelles d'Eurostat (la ville et les communes dont au moins 15 % des actifs occupés vont y travailler), chacune avec la sienne ; les autres, selon leur degré d'urbanisation : villes moyennes et périphéries (bitarteko hiriguneak) ou zone rurale (landa eremua). Source : Eurostat, LAU 2019.",
       isurialdea: "Versant où se trouve la plus grande partie du territoire communal : atlantique (vers le golfe de Gascogne, bassin de l'Adour compris) ou méditerranéen (bassin de l'Èbre). Source : EU-Hydro (Copernicus).",
-      ibai_arroa: "Bassin versant où se trouve la plus grande partie du territoire communal, dans son versant : ceux de la carte du climat de MapaMeteo, les plus petits réunis à un voisin. Source : EU-Hydro (Copernicus).",
+      ibai_arroa: "Les bassins de la carte du climat de MapaMeteo, les plus petits réunis à un voisin. En Hegoalde, par sections : chaque section dans son bassin, et la commune qui a des sections dans plusieurs, partagée (Donostia : Urumea, Oiartzun et Oria) ; aux élections sans sections, dans le bassin de la plus grande partie de ses électeurs. En Iparralde, dans celui de la plus grande partie du territoire. Source : EU-Hydro (Copernicus).",
       udal_tamaina: "Population de la commune, selon les tranches du rapport de Gaindegia. Sources : ministère de l'Intérieur espagnol, municipales 2023 (Hegoalde) ; INSEE (Iparralde).",
       ikasketa_maila: "Part de la population de 15 ans ou plus diplômée de l'enseignement supérieur, 2023 : faible, moins de 35 % ; moyen, 35–45 % ; élevé, 45 % ou plus. Sources : INE, recensement annuel (Hegoalde) ; INSEE, recensement (Iparralde).",
       errenta_maila: "Médiane du revenu disponible par unité de consommation, 2023 (après impôts et prestations comprises ; le revenu du ménage divisé par ses unités de consommation : 1 pour le premier adulte, 0,5 pour chaque autre personne de 14 ans ou plus, 0,3 par enfant) : faible, moins de 23 000 € ; moyen, 23 000–26 000 € ; élevé, 26 000 € ou plus. Sources : INE, ADRH (Hegoalde) ; INSEE, Filosofi (Iparralde)." },
@@ -456,11 +456,11 @@ const TESTUAK = {
     aggOharraEH: "Votes added up by party family; if local lists, taken together, come first, the area is shown in grey.",
     tarteAzalpena: { errenta_maila: "Median disposable income per consumption unit, 2023", ikasketa_maila: "People aged 15 and over with tertiary education, 2023" },
     deskribapena: "Description", desk: { "udalerriak": "Municipalities in this area", "oharra": "Click a municipality to see its results." },
-    balioIzena: { "euskara_eremua": "% Basque speakers", "udal_tamaina": "inhabitants", "ikasketa_maila": "% tertiary education", "errenta_maila": "income (median)" },
+    zatia: "part", balioIzena: { "ibai_arroa": "split municipalities: % of electorate", "euskara_eremua": "% Basque speakers", "udal_tamaina": "inhabitants", "ikasketa_maila": "% tertiary education", "errenta_maila": "income (median)" },
     mailaDesk: { euskara_eremua: "Share of Basque speakers in each municipality (speak Basque well or quite well): Basque-speaking area over 50%, mixed 30–50%, Spanish/French-speaking under 30%. This is knowledge, not use. Sources: Eustat, 2021 census (BAC); Nastat, figure for each language zone, provisional (Nafarroa Garaia); 7th Sociolinguistic Survey, in three areas (Iparralde).",
       hiri_funtzionala: "Criterion of Gaindegia's report «Hiriburuen eremu funtzionalak XXI. mendeko geografian» (2020): municipalities in Eurostat functional urban areas (the city and the municipalities from which at least 15% of employed residents commute to it), each with its own; the rest by degree of urbanisation: towns and suburbs (bitarteko hiriguneak) or rural areas (landa eremua). Source: Eurostat, LAU 2019.",
       isurialdea: "Drainage slope where most of the municipality's land lies: Atlantic (to the Bay of Biscay, including the Adour basin) or Mediterranean (Ebro basin). Source: EU-Hydro (Copernicus).",
-      ibai_arroa: "River basin where most of the municipality's land lies, within its slope: those of MapaMeteo's climate map, the smallest merged with a neighbour. Source: EU-Hydro (Copernicus).",
+      ibai_arroa: "The basins of MapaMeteo's climate map, the smallest merged with a neighbour. In Hegoalde, by census section: each section in its basin, and a municipality with sections in several, split (Donostia: Urumea, Oiartzun and Oria); in elections without sections, in the basin holding most of its electorate. In Iparralde, in the one with most of its land. Source: EU-Hydro (Copernicus).",
       udal_tamaina: "Municipal population, in the bands of Gaindegia's report. Sources: Spanish Ministry of the Interior, 2023 local elections (Hegoalde); INSEE (Iparralde).",
       ikasketa_maila: "Share of people aged 15 and over with tertiary education, 2023: low, under 35%; medium, 35–45%; high, 45% or more. Sources: INE, annual census (Hegoalde); INSEE, census (Iparralde).",
       errenta_maila: "Median disposable income per consumption unit, 2023 (after taxes, including benefits; household income divided by its consumption units: 1 for the first adult, 0.5 for each other person aged 14 or over, 0.3 per child): low, under €23,000; medium, €23,000–26,000; high, €26,000 or more. Sources: INE, ADRH (Hegoalde); INSEE, Filosofi (Iparralde)." },
@@ -551,7 +551,7 @@ const dfmt = (d) => d == null ? "" : `<span class="${d > 0 ? "up" : d < 0 ? "dow
 const BASE = (() => { let b = location.href.split(/[?#]/)[0]; if (/\.html?$/i.test(b)) b = b.slice(0, b.lastIndexOf("/") + 1); if (!b.endsWith("/")) b += "/"; return b; })();
 // Huella del contenido de data/ y geo/ (la pone build_map.py). Va en la URL de cada fichero: si los
 // datos cambian, cambia la URL y el navegador no reutiliza la copia vieja de su caché.
-const VERSION = "0447f4e7ae1e";
+const VERSION = "de2e63db2bd1";
 // Los datos se cargan con fetch() desde el propio sitio (Cloudflare Pages o python -m http.server)
 const load = async (u) => {
   const r = await fetch(new URL(`${u}?v=${VERSION}`, BASE).href, { cache: "force-cache" });
@@ -1084,8 +1084,9 @@ function garbitu(key) {
     const z = f.properties.c === NODATA ? hutsunea(key, f.id) : null;  // solo los vacíos: ahorra calcular dos veces
     if (z) f.properties.z = z; else delete f.properties.z;
   }
-  // zona de toda Euskal Herria elegida: las demás, rayadas, cada una en una dirección (la elegida, limpia)
-  if (ehZonak) {
+  // zona sociodemográfica (tamaño, estudios, renta) elegida: las demás, rayadas, cada una en una dirección (la elegida,
+  // limpia); en las geográficas no hace falta: cada zona es un trozo de mapa que se ve
+  if (ehZonak && ((INDEX.mailaTaldeak || {}).soziodemografikoak || []).includes(key)) {
     const hau = String(state.hautatua || ""), besteak = [...new Set(feats.map(f => String(f.id)))].filter(i => i !== hau).sort();
     const zehar = feats.some(f => String(f.id) === hau) ? new Map(besteak.map((i, n) => [i, `zeharra-${n % ZEHARRAK.length}`])) : new Map();
     for (const f of feats) { const m = !f.properties.z && zehar.get(String(f.id)); if (m) f.properties.mz = m; else delete f.properties.mz; }
@@ -1359,8 +1360,8 @@ function hautatu(id, src, gero = false) {
   markatu(sel, "sel", false); sel = null; state.hautatua = id;
   if (id) { sel = { source: src || mailaAktiboa(), id }; markatu(sel, "sel", true); }
   enklabeakNabarmendu();
-  const l = mailaAktiboa();  // zonas de toda Euskal Herria: las rayas de las no elegidas
-  if (GEO[l] && GEO[l].features.some(f => f.properties.e)) { sucio.add(l); garbitu(l); }
+  const l = mailaAktiboa();  // zonas sociodemográficas: las rayas de las no elegidas
+  if (((INDEX.mailaTaldeak || {}).soziodemografikoak || []).includes(l)) { sucio.add(l); garbitu(l); }
   if (gero) arnasa().then(() => { if (state.hautatua === id) margotu(); }); else margotu();
 }
 map.on("moveend", () => urlaIdatzi());
@@ -1573,11 +1574,12 @@ function tarteAzalpena(id) {
 let EREMU_DATUAK = null, eremuPromesa = null;  // los datos, cuando ya han llegado; la petición, una sola vez
 const eremuDatuak = () => (EREMU_DATUAK ? Promise.resolve(EREMU_DATUAK)
   : (eremuPromesa = eremuPromesa || load("data/eremuak.json").then((d) => (EREMU_DATUAK = d)).catch((e) => { eremuPromesa = null; throw e; })));
-const EREMU_BALIOA = { euskara_eremua: (v) => pct(v), udal_tamaina: (v) => fmt(v), ikasketa_maila: (v) => pct(v), errenta_maila: (v) => `${fmt(v)}\u00a0€` };
+const EREMU_BALIOA = { euskara_eremua: (v) => pct(v), udal_tamaina: (v) => fmt(v), ikasketa_maila: (v) => pct(v), errenta_maila: (v) => `${fmt(v)}\u00a0€`,
+  ibai_arroa: (v) => `${T.zatia} · ${pct(v)}` };  // cuencas: solo los municipios partidos, con el % de su censo en esta
 const HERRIALDE_ORDENA = ["Araba", "Bizkaia", "Gipuzkoa", "Nafarroa", "Lapurdi", "Behe Nafarroa", "Zuberoa"];
 // Los municipios de la zona por herrialdes (los enclaves, al final), cada uno con su dato: [[herrialde, [[ine, izena, balioa]]]]
 function zonarenUdalerriak(D, l, izena) {
-  const bal = (D.balioak || {})[l] || {}, taldeak = new Map();
+  const bal = ((D.zatiak || {})[l] || {})[izena] || (D.balioak || {})[l] || {}, taldeak = new Map();
   for (const i of ((D.kideak || {})[l] || {})[izena] || []) {
     const m = MUNIS[i]; if (!m) continue;
     if (!taldeak.has(m.t)) taldeak.set(m.t, []);
@@ -2595,14 +2597,19 @@ function foHauteskundea(doc, z, kat, y) {
 }
 
 // En qué se aparta de su herrialde, su ámbito y Euskal Herria: puntos arriba o abajo, familia a familia
+// lo más abajo que puede llegar el contenido de una página: encima del pie (foOina)
+const FO_OINA_GOIA = FO_H - FO_ERTZA - 10;
+const FO_ALDE_LERRO = 4.7, FO_ALDE_GOIBURUA = 5.5;
 function foAldeak(doc, z, kat, y) {
   const a = folioAldeak(z, kat); if (!a) return y;
+  // las familias que caben antes del pie (como mucho siete)
+  const kop = Math.max(0, Math.min(7, a.fam.length, Math.floor((FO_OINA_GOIA - y - FO_ALDE_GOIBURUA) / FO_ALDE_LERRO)));
   const wIzen = 56, wPct = 18, wZut = (FO_ZAB - wIzen - wPct) / a.ref.length;
   foT(doc, FO_ERTZA, y, foMoztu(doc, izena(folioBizirik(kat)), wIzen, "Saira", 7.5), "Saira", 7.5, FO_ILUN, wIzen);
   foT(doc, FO_ERTZA + wIzen, y, T.folio.hemen, "Saira", 7, FO_ILUN, wPct, "R");
   a.ref.forEach((ref, i) => foT(doc, FO_ERTZA + wIzen + wPct + i * wZut, y, foMoztu(doc, ref.etiketa, wZut - 4, "Saira", 7), "Saira", 7, FO_ILUN, wZut - 4, "C"));
-  y += 5.5;
-  for (const fam of a.fam.slice(0, 7)) {
+  y += FO_ALDE_GOIBURUA;
+  for (const fam of a.fam.slice(0, kop)) {
     foTxipa(doc, FO_ERTZA, y, fam, foLabur(fam, kat), wIzen, 8);
     foT(doc, FO_ERTZA + wIzen, y, foPct(a.nirea[fam]), "MonoM", 8, FO_TINTA, wPct, "R");
     a.ref.forEach((ref, i) => {
@@ -2614,7 +2621,7 @@ function foAldeak(doc, z, kat, y) {
       const zab = Math.min(Math.abs(v), 15) / 15 * (wZut - 21) / 2;
       foBete(doc, v > 0 ? erdia : erdia - zab, y + 0.8, zab, 2.2, v > 0 ? FO_GORA : FO_BEHERA);
     });
-    y += 4.7;
+    y += FO_ALDE_LERRO;
   }
   return y + 2;
 }
@@ -2813,7 +2820,8 @@ async function folioa() {
   let y = foKpiak(doc, z, foGoiburua(doc, z, 1, guztira), D);
   y = foAtala(doc, y, T.folio.azkenHauteskundeak);
   for (const kat of KATS) y = foHauteskundea(doc, z, kat, y);
-  if (folioAldeak(z, "estatu")) {  // Euskal Herria no se compara con nada: no hay sección
+  // Euskal Herria no se compara con nada: no hay sección; tampoco si no caben al menos dos familias encima del pie
+  if (folioAldeak(z, "estatu") && y + 1 + 7.5 + FO_ALDE_GOIBURUA + 2 * FO_ALDE_LERRO <= FO_OINA_GOIA) {
     y = foAtala(doc, y + 1, T.folio.nonDagoAldea);
     foAldeak(doc, z, "estatu", y);
   }
